@@ -1,0 +1,42 @@
+{
+  "it": {
+    "chatTitle": "La nostra conversazione",
+    "chatMessage": "Chiedimi qualcosa...",
+    "chatInputPlaceholder": "Scrivi un messaggio...",
+    "engageTitle": "Come Funziona?",
+    "engageInstruction": "Per dirmi qualcosa, premi il pulsante \"Parla\" (quando ascolto e penso mi si illuminano le orecchie) oppure usa la chat per scrivermi un messaggio.",
+    "engageWarning": "Prima di andar via, ricordati di salutarmi premento il pulsante \"Alla Prossima!\", così posso prepararmi per il nostro prossimo incontro.",
+    "talk": "Parla",
+    "goodbye": "Alla Prossima!",
+    "start": "Inizia",
+    "repeat": "Ripeti",
+    "next": "Vai Avanti",
+    "emergency": "In caso di emergenza",
+    "timerTitle": "Tempo Rimanente:",
+    "startChallenge": "Inizia a Cucinare",
+    "challengeInstructions": "Ti piace la ricetta che ti ho suggerito?",
+    "ingredients": "Ingredienti",
+    "step": "Passo",
+    "challengeSplashTitle": "Creerò una ricetta speciale per te!"
+  },
+  "en": {
+    "chatTitle": "Our conversation",
+    "chatMessage": "Ask me something...",
+    "chatInputPlaceholder": "Write a message...",
+    "engageTitle": "How Does It Work?",
+    "engageInstruction": "To tell me something, press the \"Talk\" (when I listen or think my ears are blue) button or use the chat to write me a message.",
+    "engageWarning": "Before you leave, remember to say goodbye by pressing the \"See you soon!\" button below, so I can get ready for our next meeting.",
+    "talk": "Talk",
+    "goodbye": "See you soon!",
+    "start": "Start",
+    "repeat": "Repeat",
+    "next": "Next",
+    "emergency": "In case of emergency",
+    "timerTitle": "Remaining Time:",
+    "startChallenge": "Start Cooking",
+    "challengeInstructions": "If you like the recipe I suggested...",
+    "ingredients": "Ingredients",
+    "step": "Step",
+    "challengeSplashTitle": "I will create a special recipe for you!"
+  }
+}
