@@ -16,7 +16,7 @@ android {
         buildConfigField("String", "HEAD_API_HOST", "\"http://172.20.10.3:8000\"")
         applicationId = "it.diunito.pepper"
         minSdk = 23
-        targetSdk = 36
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
