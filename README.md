@@ -1,4 +1,4 @@
-# Pepper ChatBot Stage
+# 🤖 Pepper ChatBot
 
 Benvenuti nel progetto **Pepper ChatBot**, un'applicazione Android avanzata sviluppata per il robot **Pepper**.
 <br>L'app trasforma Pepper in un compagno di conversazione intelligente, integrando capacità di dialogo basate su Large Language Models (LLM) per offrire un'esperienza di interazione naturale e coinvolgente.
