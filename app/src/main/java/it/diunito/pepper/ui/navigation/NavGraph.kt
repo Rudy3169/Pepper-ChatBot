@@ -8,12 +8,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import it.diunito.pepper.ui.screens.EngageScreen
-import it.diunito.pepper.ui.screens.MainScreen
+import it.diunito.pepper.ui.screens.WelcomeScreen
 import it.diunito.pepper.ui.screens.SplashScreen
 
 sealed class Screen(val route: String) {
     object Splash : Screen("splash")
-    object Menu   : Screen("menu")
+    object Menu   : Screen("welcome")
     object Chat   : Screen("chat")
     object Gate   : Screen("gate")
 }
@@ -38,8 +38,8 @@ fun AppNavGraph(modifier: Modifier = Modifier) {
         }
         
         composable(Screen.Menu.route) {
-            MainScreen(
-                onGoEngage = {
+            WelcomeScreen(
+                onStartChat = {
                     navController.navigate(Screen.Chat.route)
                 }
             )

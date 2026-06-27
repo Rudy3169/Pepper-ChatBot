@@ -23,11 +23,9 @@ data class TextLabel(
     val next: String,
     val emergency: String,
     val timerTitle: String,
-    val startChallenge: String,
-    val challengeInstructions : String,
-    val ingredients: String,
-    val step: String,
-    val challengeSplashTitle: String
+    val welcomeTitle: String,
+    val welcomeSubtitle: String,
+    val startChatting: String
 )
 
 @Serializable

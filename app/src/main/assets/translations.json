@@ -13,11 +13,9 @@
     "next": "Vai Avanti",
     "emergency": "In caso di emergenza",
     "timerTitle": "Tempo Rimanente:",
-    "startChallenge": "Inizia a Cucinare",
-    "challengeInstructions": "Ti piace la ricetta che ti ho suggerito?",
-    "ingredients": "Ingredienti",
-    "step": "Passo",
-    "challengeSplashTitle": "Creerò una ricetta speciale per te!"
+    "welcomeTitle": "Ciao! Sono Pepper",
+    "welcomeSubtitle": "Sono qui per chiacchierare con te...",
+    "startChatting": "Inizia a chattare"
   },
   "en": {
     "chatTitle": "Our conversation",
@@ -33,10 +31,8 @@
     "next": "Next",
     "emergency": "In case of emergency",
     "timerTitle": "Remaining Time:",
-    "startChallenge": "Start Cooking",
-    "challengeInstructions": "If you like the recipe I suggested...",
-    "ingredients": "Ingredients",
-    "step": "Step",
-    "challengeSplashTitle": "I will create a special recipe for you!"
+    "welcomeTitle": "Hi! I'm Pepper",
+    "welcomeSubtitle": "I'm here to chat with you...",
+    "startChatting": "Start chatting"
   }
 }
