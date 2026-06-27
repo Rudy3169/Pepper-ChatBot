@@ -25,7 +25,15 @@ data class TextLabel(
     val timerTitle: String,
     val welcomeTitle: String,
     val welcomeSubtitle: String,
-    val startChatting: String
+    val startChatting: String,
+    val pepperReady: String,
+    val pepperListening: String,
+    val pepperThinking: String,
+    val suggestion1: String,
+    val suggestion2: String,
+    val suggestion3: String,
+    val suggestion4: String,
+    val suggestionsTitle: String
 )
 
 @Serializable

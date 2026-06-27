@@ -15,7 +15,15 @@
     "timerTitle": "Tempo Rimanente:",
     "welcomeTitle": "Ciao! Sono Pepper",
     "welcomeSubtitle": "Sono qui per chiacchierare con te...",
-    "startChatting": "Inizia a chattare"
+    "startChatting": "Inizia a chattare",
+    "pepperReady": "Pepper è pronto!",
+    "pepperListening": "Pepper sta ascoltando...",
+    "pepperThinking": "Pepper sta pensando...",
+    "suggestion1": "Raccontami qualcosa di te",
+    "suggestion2": "Come stai oggi?",
+    "suggestion3": "Raccontami una barzelletta",
+    "suggestion4": "Cosa sai fare?",
+    "suggestionsTitle": "Prova a chiedermi:"
   },
   "en": {
     "chatTitle": "Our conversation",
@@ -33,6 +41,14 @@
     "timerTitle": "Remaining Time:",
     "welcomeTitle": "Hi! I'm Pepper",
     "welcomeSubtitle": "I'm here to chat with you...",
-    "startChatting": "Start chatting"
+    "startChatting": "Start chatting",
+    "pepperReady": "Pepper is ready!",
+    "pepperListening": "Pepper is listening...",
+    "pepperThinking": "Pepper is thinking...",
+    "suggestion1": "Tell me about yourself",
+    "suggestion2": "How are you today?",
+    "suggestion3": "Tell me a joke",
+    "suggestion4": "What can you do?",
+    "suggestionsTitle": "Try asking me:"
   }
 }

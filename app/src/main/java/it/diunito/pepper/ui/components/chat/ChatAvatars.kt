@@ -2,6 +2,7 @@ package it.diunito.pepper.ui.components.chat
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
@@ -22,6 +23,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import it.diunito.pepper.R
+import it.diunito.pepper.ui.components.overlay.LocalIsDark
+import it.diunito.pepper.ui.theme.BubbleDarkIncoming
+import it.diunito.pepper.ui.theme.BubbleDarkOutgoing
 
 @Composable
 fun Avatar (
@@ -30,12 +34,24 @@ fun Avatar (
     painter: Painter?=null, // image from resource
     imageVector: ImageVector?=null, // icon preset
     contentTint: Color,
-    size:Dp = 32.dp
+    size: Dp = 32.dp
 ) {
+    val isDark = LocalIsDark.current
+
     Box(
         modifier = modifier
             .size(size)
             .clip(CircleShape)
+            .then(
+                if (isDark) {
+                    // Subtle border for definition on dark backgrounds
+                    Modifier.border(
+                        width = 1.dp,
+                        color = Color.White.copy(alpha = 0.1f),
+                        shape = CircleShape
+                    )
+                } else Modifier
+            )
             .background(bgColor),
         contentAlignment = Alignment.Center
     ) {
@@ -64,9 +80,15 @@ fun Avatar (
 
 @Composable
 fun PepperAvatar(modifier: Modifier = Modifier, size: Dp = 32.dp) {
+    val isDark = LocalIsDark.current
+
+    // Muted background in dark mode instead of bright yellow
+    val bg = if (isDark) BubbleDarkIncoming.copy(alpha = 0.8f)
+             else MaterialTheme.colorScheme.secondary
+
     Avatar(
         modifier = modifier,
-        bgColor = MaterialTheme.colorScheme.secondary,
+        bgColor = bg,
         painter = painterResource(R.drawable.ic_pepper),
         contentTint = MaterialTheme.colorScheme.onSecondary,
         size = size
@@ -75,12 +97,19 @@ fun PepperAvatar(modifier: Modifier = Modifier, size: Dp = 32.dp) {
 
 @Composable
 fun UserAvatar(modifier: Modifier = Modifier, size: Dp = 32.dp) {
+    val isDark = LocalIsDark.current
+
+    // Muted teal in dark mode instead of bright blue
+    val bg = if (isDark) BubbleDarkOutgoing
+             else MaterialTheme.colorScheme.primary
+    val tint = if (isDark) Color.White.copy(alpha = 0.9f)
+               else MaterialTheme.colorScheme.onPrimary
+
     Avatar(
         modifier = modifier,
-        bgColor = MaterialTheme.colorScheme.primary,
+        bgColor = bg,
         imageVector = Icons.Filled.Person,
-        contentTint = MaterialTheme.colorScheme.onPrimary,
+        contentTint = tint,
         size = size
     )
 }
-
