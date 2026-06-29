@@ -34,19 +34,14 @@ fun ChatBox(
     showPepperTyping: Boolean,
 
     ) {
-    // set background based on theme
-    val isDark = LocalIsDark.current
-    val bgRes = ClientPictures.background(isDark)
-    val bitmap = ImageBitmap.imageResource(id = bgRes)
-    val tiledBrush: Brush = remember(bitmap) {
-        ShaderBrush(ImageShader(bitmap, TileMode.Repeated, TileMode.Repeated))
-    }
+    // The background is now handled by the parent Surface in EngageScreen
+    // to provide a clean, modern card look without the noisy tiled pattern.
 
 //    val messages by viewModel.chat.observeAsState(emptyList())
     val listState = rememberLazyListState()
 
     // Recycler view for the messages
-    Box(modifier = modifier.background(tiledBrush)) {
+    Box(modifier = modifier) {
         LazyColumn(
             state = listState,
             modifier = Modifier

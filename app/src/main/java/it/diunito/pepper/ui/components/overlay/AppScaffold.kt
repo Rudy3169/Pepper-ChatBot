@@ -1,8 +1,10 @@
 package it.diunito.pepper.ui.components.overlay
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -33,46 +35,50 @@ fun AppScaffold(
     content: @Composable (PaddingValues) -> Unit
 ) {
     CompositionLocalProvider(LocalLanguageHandler provides languageHandler) {
-        Scaffold(
-            topBar = {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 3.dp, bottom = 3.dp)
-                        .wrapContentHeight()
-                        .padding(horizontal = 8.dp),
-                    horizontalArrangement = Arrangement.End,
-                    verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
-                ){
-                    ThemeToggle(
-                        isDark = isDark,
-                        onToggle = onToggleTheme,
-                        onResetToSystem = onResetToSystem
-                    )
-                    val currentLang by languageHandler.currentLanguage.collectAsState()
+        Box(modifier = Modifier.fillMaxSize()) {
+            AnimatedMeshBackground()
+            Scaffold(
+                containerColor = androidx.compose.ui.graphics.Color.Transparent,
+                topBar = {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 3.dp, bottom = 3.dp)
+                            .wrapContentHeight()
+                            .padding(horizontal = 8.dp),
+                        horizontalArrangement = Arrangement.End,
+                        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+                    ){
+                        ThemeToggle(
+                            isDark = isDark,
+                            onToggle = onToggleTheme,
+                            onResetToSystem = onResetToSystem
+                        )
+                        val currentLang by languageHandler.currentLanguage.collectAsState()
 
-                    LanguageSwitch(
-                        language = currentLang.code,
-                        onSwitchLanguage = {
-                            val next = if (currentLang == AppLanguage.IT) AppLanguage.EN else AppLanguage.IT
-                            languageHandler.setLanguage(next)
-                        }
+                        LanguageSwitch(
+                            language = currentLang.code,
+                            onSwitchLanguage = {
+                                val next = if (currentLang == AppLanguage.IT) AppLanguage.EN else AppLanguage.IT
+                                languageHandler.setLanguage(next)
+                            }
+                        )
+                    }
+                },
+                bottomBar = {
+                    FooterLogos(
+                        isDark = isDark,
+                        // clickable logos just in case
+                        onAirlabClick = onAirlabClick,
+                        onDipInfoClick = onDipInfoClick,
+                        onUnitoClick = onUnitoClick,
+                        height = 44.dp
                     )
                 }
-            },
-            bottomBar = {
-                FooterLogos(
-                    isDark = isDark,
-                    // clickable logos just in case
-                    onAirlabClick = onAirlabClick,
-                    onDipInfoClick = onDipInfoClick,
-                    onUnitoClick = onUnitoClick,
-                    height = 44.dp
-                )
-            }
-        ) { innerPadding ->
-            CompositionLocalProvider(LocalIsDark provides isDark) {
-                content(innerPadding)
+            ) { innerPadding ->
+                CompositionLocalProvider(LocalIsDark provides isDark) {
+                    content(innerPadding)
+                }
             }
         }
     }

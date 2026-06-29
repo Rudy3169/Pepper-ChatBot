@@ -7,6 +7,7 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -39,7 +40,7 @@ import it.diunito.pepper.ui.components.overlay.LocalIsDark
 import it.diunito.pepper.ui.theme.ClientIcons
 import it.diunito.pepper.ui.theme.HeaderDark
 import it.diunito.pepper.ui.theme.InputDarkField
-import it.diunito.pepper.ui.theme.SendButtonColor
+
 import it.diunito.pepper.ui.theme.white
 import it.diunito.pepper.ui.scripts.LocalLanguageHandler as lang
 
@@ -97,7 +98,7 @@ fun ChatInputBar(
                     unfocusedContainerColor = fieldBackground,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    cursorColor = if (isDark) SendButtonColor else MaterialTheme.colorScheme.primary
+                    cursorColor = MaterialTheme.colorScheme.primary
                 )
             )
 
@@ -110,48 +111,40 @@ fun ChatInputBar(
                     (fadeIn() + scaleIn(initialScale = 0.8f))
                         .togetherWith(fadeOut() + scaleOut(targetScale = 0.8f))
                 },
-                label = "mic_send_swap"
+                label = "mic_send_swap",
+                modifier = Modifier.padding(bottom = 4.dp)
             ) { showSend ->
-                Box(
+                Surface(
+                    shape = CircleShape,
+                    color = when {
+                        showSend -> MaterialTheme.colorScheme.primary
+                        !isMicEnabled -> MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
+                        else -> MaterialTheme.colorScheme.primary
+                    },
+                    shadowElevation = if (isDark || (!showSend && !isMicEnabled)) 0.dp else 1.dp,
                     modifier = Modifier
                         .size(48.dp)
                         .clip(CircleShape)
-                        .background(
-                            when {
-                                showSend -> SendButtonColor
-                                !isMicEnabled -> SendButtonColor.copy(alpha = 0.3f)
-                                else -> SendButtonColor
-                            }
-                        ),
-                    contentAlignment = Alignment.Center
+                        .clickable(
+                            enabled = if (showSend) true else isMicEnabled,
+                            onClick = { if (showSend) onSend() else onMic?.invoke() }
+                        )
                 ) {
-                    if (showSend) {
-                        // Send button
-                        IconButton(
-                            onClick = onSend,
-                            colors = IconButtonDefaults.iconButtonColors(
-                                contentColor = white
-                            )
-                        ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        if (showSend) {
+                            // Send button
                             Icon(
                                 imageVector = Icons.AutoMirrored.Filled.Send,
                                 contentDescription = "Send",
+                                tint = white,
                                 modifier = Modifier.size(22.dp)
                             )
-                        }
-                    } else {
-                        // Mic button
-                        IconButton(
-                            onClick = { onMic?.invoke() },
-                            enabled = isMicEnabled,
-                            colors = IconButtonDefaults.iconButtonColors(
-                                contentColor = white,
-                                disabledContentColor = white.copy(alpha = 0.5f)
-                            )
-                        ) {
+                        } else {
+                            // Mic button
                             Icon(
                                 painter = ClientIcons.mic(),
                                 contentDescription = labels.talk,
+                                tint = if (isMicEnabled) white else white.copy(alpha = 0.5f),
                                 modifier = Modifier.size(22.dp)
                             )
                         }

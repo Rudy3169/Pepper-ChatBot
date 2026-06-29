@@ -64,8 +64,8 @@ import it.diunito.pepper.ui.components.chat.ChatHeader
 import it.diunito.pepper.ui.components.chat.ChatInputBar
 import it.diunito.pepper.ui.components.chat.ChatMessage
 import it.diunito.pepper.ui.components.overlay.LocalIsDark
+import it.diunito.pepper.ui.theme.AIRblue
 import it.diunito.pepper.ui.theme.OnlineGreen
-import it.diunito.pepper.ui.theme.SendButtonColor
 import it.diunito.pepper.ui.theme.UNITOred
 import it.diunito.pepper.ui.viewmodel.ChatViewModel
 import it.diunito.pepper.ui.scripts.LocalLanguageHandler as lang
@@ -100,7 +100,7 @@ fun EngageScreen(
     // Status indicator color
     val statusColor = when {
         isUserTyping -> UNITOred
-        isPepperTyping -> SendButtonColor
+        isPepperTyping -> AIRblue
         else -> OnlineGreen
     }
 
@@ -144,9 +144,7 @@ fun EngageScreen(
             ) {
                 Column(Modifier.fillMaxSize()) {
                     ChatHeader(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 12.dp, vertical = 8.dp)
+                        modifier = Modifier.fillMaxWidth()
                     )
                     HorizontalDivider(
                         Modifier,
@@ -412,19 +410,19 @@ private fun SuggestionChip(
     onClick: () -> Unit
 ) {
     val chipBg = if (isDark) {
-        MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.25f)
+        AIRblue.copy(alpha = 0.15f)
     } else {
-        MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
+        AIRblue.copy(alpha = 0.10f)
     }
     val chipBorder = if (isDark) {
-        Color.White.copy(alpha = 0.1f)
+        AIRblue.copy(alpha = 0.3f)
     } else {
-        MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
+        AIRblue.copy(alpha = 0.3f)
     }
     val chipText = if (isDark) {
-        Color.White.copy(alpha = if (enabled) 0.85f else 0.4f)
+        AIRblue.copy(alpha = if (enabled) 1f else 0.4f)
     } else {
-        MaterialTheme.colorScheme.onBackground.copy(alpha = if (enabled) 0.85f else 0.4f)
+        AIRblue.copy(alpha = if (enabled) 1f else 0.4f)
     }
 
     Surface(

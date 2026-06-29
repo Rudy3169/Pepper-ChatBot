@@ -1,10 +1,15 @@
 package it.diunito.pepper.ui.theme
 
+import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
 
 private val LightColors = lightColorScheme(
     // Brand roles
@@ -66,8 +71,17 @@ fun ClientTheme(
     dynamicColor: Boolean = false, // blocca Material You: niente deviazioni dal brand
     content: @Composable () -> Unit
 ) {
-    val darkTheme = forceDark ?: darkTheme
-    val colors = if (darkTheme) DarkColors else LightColors
+    val effectiveDarkTheme = forceDark ?: darkTheme
+    val colors = if (effectiveDarkTheme) DarkColors else LightColors
+
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            val window = (view.context as Activity).window
+            window.statusBarColor = colors.background.toArgb()
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !effectiveDarkTheme
+        }
+    }
 
     MaterialTheme(
         colorScheme = colors,

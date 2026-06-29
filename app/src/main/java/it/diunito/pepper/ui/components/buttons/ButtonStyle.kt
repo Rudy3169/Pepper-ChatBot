@@ -1,93 +1,78 @@
 package it.diunito.pepper.ui.components.buttons
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import it.diunito.pepper.ui.theme.ClientTheme
 
-// shared size so every nav button is identical
+// ════════════════════════════════════════════════
+// Sizing tokens
+// ════════════════════════════════════════════════
 val ButtonFixedWidth: Dp = 260.dp
 val ButtonFixedHeight: Dp = 60.dp
-val ButtonIconSize: Dp = 24.dp
-val ButtonIconSpacing: Dp = 8.dp
+val ButtonIconSize: Dp = 20.dp
+val ButtonIconSpacing: Dp = 10.dp
 val ButtonMinHeight: Dp = 48.dp
 val ButtonMinWidth: Dp = 48.dp
 
-
-// color palette
+// ════════════════════════════════════════════════
+// Color palette — used by drawBehind in AppButton
+// ════════════════════════════════════════════════
 data class AppButtonColors(
-    val light: Color,   // highlight
-    val mid: Color,     // fill
-    val dark: Color,    // bottom border
-    val content: Color  // text + icon
+    val fill: Color,        // main background
+    val fillPressed: Color, // tint when pressed
+    val border: Color,      // subtle outline / bottom edge
+    val content: Color,     // text + icon
+    val glow: Color         // ambient shadow tint
 )
 
 @Composable
-fun AppButtonColorsBlue() = AppButtonColors(
-    light = MaterialTheme.colorScheme.primaryContainer,
-    mid   = MaterialTheme.colorScheme.primary,
-    dark  = MaterialTheme.colorScheme.primary.copy(alpha = .85f),
-    content = MaterialTheme.colorScheme.onPrimary
-)
-
-@Composable
-fun AppButtonColorsYellow() = AppButtonColors(
-    light = MaterialTheme.colorScheme.secondaryContainer,
-    mid   = MaterialTheme.colorScheme.secondary,
-    dark  = MaterialTheme.colorScheme.secondary.copy(alpha = .85f),
-    content = MaterialTheme.colorScheme.onSecondary
-)
-
-@Composable
-fun AppButtonColorsGray() = AppButtonColors(
-    light = MaterialTheme.colorScheme.surface,
-    mid   = MaterialTheme.colorScheme.surfaceVariant,
-    dark  = MaterialTheme.colorScheme.outlineVariant.copy(alpha = .5f),
-    content = MaterialTheme.colorScheme.onSurfaceVariant
-)
-
-@Composable
-fun AppButtonColorsRed() = AppButtonColors(
-    light = MaterialTheme.colorScheme.errorContainer,
-    mid   = MaterialTheme.colorScheme.error,
-    dark  = MaterialTheme.colorScheme.error.copy(alpha = .85f),
-    content = MaterialTheme.colorScheme.onError
-)
-
-
-/** PREVIEWS **/
-
-@Preview(showBackground = true, name = "NavButton • Blue")
-@Composable
-private fun Preview_NavButton_Blue() {
-    ClientTheme {
-        NavButton(label = "Go", onClick = {})
-    }
+fun AppButtonColorsBlue(): AppButtonColors {
+    val isDark = isSystemInDarkTheme()
+    return AppButtonColors(
+        fill = MaterialTheme.colorScheme.primary,
+        fillPressed = MaterialTheme.colorScheme.primary.copy(alpha = .82f),
+        border = if (isDark) Color.White.copy(alpha = .10f) else MaterialTheme.colorScheme.primary.copy(alpha = .45f),
+        content = MaterialTheme.colorScheme.onPrimary,
+        glow = MaterialTheme.colorScheme.primary.copy(alpha = .30f)
+    )
 }
 
-@Preview(showBackground = true, name = "AppButton • Yellow")
 @Composable
-private fun Preview_AppButton_Yellow() {
-    ClientTheme {
-        AppButton(label = "Challenge", onClick = {}, colors = AppButtonColorsYellow())
-    }
+fun AppButtonColorsYellow(): AppButtonColors {
+    val isDark = isSystemInDarkTheme()
+    return AppButtonColors(
+        fill = MaterialTheme.colorScheme.secondary,
+        fillPressed = MaterialTheme.colorScheme.secondary.copy(alpha = .82f),
+        border = if (isDark) Color.White.copy(alpha = .10f) else MaterialTheme.colorScheme.secondary.copy(alpha = .40f),
+        content = MaterialTheme.colorScheme.onSecondary,
+        glow = MaterialTheme.colorScheme.secondary.copy(alpha = .25f)
+    )
 }
 
-@Preview(showBackground = true, name = "AppButton • Gray")
 @Composable
-private fun Preview_AppButton_Gray() {
-    ClientTheme {
-        AppButton(label = "Challenge", onClick = {}, colors = AppButtonColorsGray())
-    }
+fun AppButtonColorsGray(): AppButtonColors {
+    val isDark = isSystemInDarkTheme()
+    return AppButtonColors(
+        fill = if (isDark) MaterialTheme.colorScheme.surfaceVariant.copy(alpha = .5f)
+               else MaterialTheme.colorScheme.surfaceVariant,
+        fillPressed = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = .65f),
+        border = if (isDark) Color.White.copy(alpha = .06f) else MaterialTheme.colorScheme.outline.copy(alpha = .18f),
+        content = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = .65f),
+        glow = Color.Transparent
+    )
 }
 
-@Preview(showBackground = true, name = "AppButton • Red")
 @Composable
-private fun Preview_AppButton_Red() {
-    ClientTheme {
-        AppButton(label = "Challenge", onClick = {}, colors = AppButtonColorsRed())
-    }
+fun AppButtonColorsRed(): AppButtonColors {
+    val isDark = isSystemInDarkTheme()
+    return AppButtonColors(
+        fill = MaterialTheme.colorScheme.error,
+        fillPressed = MaterialTheme.colorScheme.error.copy(alpha = .82f),
+        border = if (isDark) Color.White.copy(alpha = .10f) else MaterialTheme.colorScheme.error.copy(alpha = .40f),
+        content = MaterialTheme.colorScheme.onError,
+        glow = MaterialTheme.colorScheme.error.copy(alpha = .30f)
+    )
 }

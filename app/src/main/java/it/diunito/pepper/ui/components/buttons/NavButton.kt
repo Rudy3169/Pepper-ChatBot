@@ -2,9 +2,11 @@ package it.diunito.pepper.ui.components.buttons
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import it.diunito.pepper.ui.theme.ClientTheme
 import androidx.compose.material.icons.automirrored.outlined.ArrowForward
 
@@ -12,6 +14,7 @@ import androidx.compose.material.icons.automirrored.outlined.ArrowForward
 fun NavButton(
     label: String,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
     useBlue: Boolean = true,
     myIcon: Painter? = null,
     icon: ImageVector? = null,
@@ -21,8 +24,10 @@ fun NavButton(
     AppButton(
         label = label,
         onClick = onClick,
-        width  = ButtonFixedWidth,
+        modifier = modifier,
+        width = ButtonFixedWidth,
         height = ButtonFixedHeight,
+        cornerRadius = 14.dp,
         colors = preset,
         myIcon = myIcon,
         icon = icon
@@ -36,4 +41,3 @@ private fun Preview_NavButton_Blue() {
         NavButton(label = "Go", onClick = {}, icon = Icons.AutoMirrored.Outlined.ArrowForward)
     }
 }
-

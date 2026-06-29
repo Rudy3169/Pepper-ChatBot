@@ -112,7 +112,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    
+
     implementation(libs.java.websocket.v154)
 
     testImplementation(libs.junit)
