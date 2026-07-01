@@ -24,17 +24,17 @@ Il design dell'interfaccia è stato progettato per essere intuitivo e accessibil
 
 ### Schermate Principali
 
-**Welcome Screen (Light)**
-![Welcome Screen Light](figma/WelcomeScreenLightItalian.svg)
+**Welcome Screen (Light)** <br>
+![Welcome Screen Light](./figma/WelcomeScreenLightItalian.svg)
 
-**Welcome Screen (Dark)**
-![Welcome Screen Dark](figma/WelcomeScreenDarkItalian.svg)
+**Welcome Screen (Dark)** <br>
+![Welcome Screen Dark](./figma/WelcomeScreenDarkItalian.svg)
 
-**Chat Screen (Light)**
-![Chat Screen Light](figma/ChatScreenLightItalian.png)
+**Chat Screen (Light)** <br>
+![Chat Screen Light](./figma/ChatScreenLightItalian.svg)
 
-**Chat Screen (Dark)**
-![Chat Screen Dark](figma/ChatScreenDarkItalian.png)
+**Chat Screen (Dark)** <br>
+![Chat Screen Dark](./figma/ChatScreenDarkItalian.svg)
 
 ## 🛠️ Stack Tecnologico
 
