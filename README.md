@@ -18,21 +18,23 @@ Questo progetto è stato sviluppato nell'ambito di un tirocinio presso l'Univers
 
 ## 🎨 Design dell'Interfaccia (Figma)
 
-Il design dell'interfaccia è stato progettato per essere intuitivo e accessibile sul tablet di Pepper. Di seguito sono riportate le anteprime delle schermate principali e i relativi link al progetto Figma.
+Il design dell'interfaccia è stato progettato per essere intuitivo e accessibile sul tablet di Pepper. Di seguito sono riportate le anteprime delle schermate principali.
+
+[**🔗 Clicca qui per testare il Prototipo su Figma**](https://www.figma.com/design/zOiNIT1PvIKalsW73Otczu/Pepper-Chatbot)
 
 ### Schermate Principali
 
 **Welcome Screen (Light)**
-[![Anteprima Welcome Screen Light](figma/WelcomeScreenLightItalian.svg)](https://www.figma.com/design/zOiNIT1PvIKalsW73Otczu/Pepper-Chatbot?node-id=52-641&t=XyMCIWsTUsqaTWbV-4)
+<img src="figma/WelcomeScreenLightItalian.svg" alt="Welcome Screen Light" width="100%">
 
 **Welcome Screen (Dark)**
-[![Anteprima Welcome Screen Dark](figma/WelcomeScreenDarkItalian.svg)](https://www.figma.com/design/zOiNIT1PvIKalsW73Otczu/Pepper-Chatbot?node-id=52-652&t=XyMCIWsTUsqaTWbV-4)
+<img src="figma/WelcomeScreenDarkItalian.svg" alt="Welcome Screen Dark" width="100%">
 
 **Chat Screen (Light)**
-[![Anteprima Chat Screen Light](figma/ChatScreenLightItalian.png)](https://www.figma.com/design/zOiNIT1PvIKalsW73Otczu/Pepper-Chatbot?node-id=5-10&t=XyMCIWsTUsqaTWbV-4)
+<img src="figma/ChatScreenLightItalian.svg" alt="Chat Screen Light" width="100%">
 
 **Chat Screen (Dark)**
-[![Anteprima Chat Screen Dark](figma/ChatScreenDarkItalian.jpg)](https://www.figma.com/design/zOiNIT1PvIKalsW73Otczu/Pepper-Chatbot?node-id=34-43&t=XyMCIWsTUsqaTWbV-4)
+<img src="figma/ChatScreenDarkItalian.png" alt="Chat Screen Dark" width="100%">
 
 ## 🛠️ Stack Tecnologico
 
