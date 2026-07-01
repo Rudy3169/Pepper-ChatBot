@@ -16,6 +16,24 @@ Questo progetto è stato sviluppato nell'ambito di un tirocinio presso l'Univers
 - **Multi-lingua**: Supporto integrato per Italiano e Inglese, con gestione dinamica delle traduzioni e dei temi.
 - **Interfaccia Moderna**: Sviluppata interamente con **Jetpack Compose** per garantire una UI fluida, accessibile e accattivante.
 
+## 🎨 Design dell'Interfaccia (Figma)
+
+Il design dell'interfaccia è stato progettato per essere intuitivo e accessibile sul tablet di Pepper. Di seguito sono riportate le anteprime delle schermate principali e i relativi link al progetto Figma.
+
+### Schermate Principali
+
+**Welcome Screen (Light)**
+[![Anteprima Welcome Screen Light](https://www.figma.com/design/zOiNIT1PvIKalsW73Otczu/Pepper-Chatbot?node-id=52-641&t=XyMCIWsTUsqaTWbV-4)
+
+**Welcome Screen (Dark)**
+[![Anteprima Welcome Screen Dark](https://www.figma.com/design/zOiNIT1PvIKalsW73Otczu/Pepper-Chatbot?node-id=52-652&t=XyMCIWsTUsqaTWbV-4)
+
+**Chat Screen (Light)**
+[![Anteprima Chat Screen Light](https://www.figma.com/design/zOiNIT1PvIKalsW73Otczu/Pepper-Chatbot?node-id=5-10&t=XyMCIWsTUsqaTWbV-4)
+
+**Chat Screen (Dark)**
+[![Anteprima Chat Screen Dark](https://www.figma.com/design/zOiNIT1PvIKalsW73Otczu/Pepper-Chatbot?node-id=34-43&t=XyMCIWsTUsqaTWbV-4)
+
 ## 🛠️ Stack Tecnologico
 
 - **Linguaggio**: Kotlin
