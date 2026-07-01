@@ -23,16 +23,16 @@ Il design dell'interfaccia è stato progettato per essere intuitivo e accessibil
 ### Schermate Principali
 
 **Welcome Screen (Light)**
-[![Anteprima Welcome Screen Light](figma/Welcome%20Screen%20Light%20Italian.svg)](https://www.figma.com/design/zOiNIT1PvIKalsW73Otczu/Pepper-Chatbot?node-id=52-641&t=XyMCIWsTUsqaTWbV-4)
+[![Anteprima Welcome Screen Light](figma/WelcomeScreenLightItalian.svg)](https://www.figma.com/design/zOiNIT1PvIKalsW73Otczu/Pepper-Chatbot?node-id=52-641&t=XyMCIWsTUsqaTWbV-4)
 
 **Welcome Screen (Dark)**
-[![Anteprima Welcome Screen Dark](figma/Welcome%20Screen%20Dark%20Italian.svg)](https://www.figma.com/design/zOiNIT1PvIKalsW73Otczu/Pepper-Chatbot?node-id=52-652&t=XyMCIWsTUsqaTWbV-4)
+[![Anteprima Welcome Screen Dark](figma/WelcomeScreenDarkItalian.svg)](https://www.figma.com/design/zOiNIT1PvIKalsW73Otczu/Pepper-Chatbot?node-id=52-652&t=XyMCIWsTUsqaTWbV-4)
 
 **Chat Screen (Light)**
-[![Anteprima Chat Screen Light](figma/Chat%20Screen%20Light%20Italian.png)](https://www.figma.com/design/zOiNIT1PvIKalsW73Otczu/Pepper-Chatbot?node-id=5-10&t=XyMCIWsTUsqaTWbV-4)
+[![Anteprima Chat Screen Light](figma/ChatScreenLightItalian.png)](https://www.figma.com/design/zOiNIT1PvIKalsW73Otczu/Pepper-Chatbot?node-id=5-10&t=XyMCIWsTUsqaTWbV-4)
 
 **Chat Screen (Dark)**
-[![Anteprima Chat Screen Dark](figma/Chat%20Screen%20Dark%20Italian.svg)](https://www.figma.com/design/zOiNIT1PvIKalsW73Otczu/Pepper-Chatbot?node-id=34-43&t=XyMCIWsTUsqaTWbV-4)
+[![Anteprima Chat Screen Dark](figma/ChatScreenDarkItalian.jpg)](https://www.figma.com/design/zOiNIT1PvIKalsW73Otczu/Pepper-Chatbot?node-id=34-43&t=XyMCIWsTUsqaTWbV-4)
 
 ## 🛠️ Stack Tecnologico
 
