@@ -64,7 +64,7 @@ fun WelcomeScreen(
     val labels = LocalLanguageHandler.current.labels.collectAsState().value
     val isDark = LocalIsDark.current
 
-    // Title/subtitle colors from Figma
+    // Title/subtitle colors
     val titleColor = if (isDark) Color(0xFFE9EDEF) else Color(0xFF2F3437)
     val subtitleColor = if (isDark) Color(0xFF8696A0) else Color(0xFF4B5563)
 

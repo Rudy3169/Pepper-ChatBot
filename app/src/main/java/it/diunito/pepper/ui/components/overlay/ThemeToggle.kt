@@ -80,7 +80,7 @@ fun ThemeToggle(
         label = "iconTint"
     )
 
-    // Icon rotation (sun spins slightly, moon stays upright for Figma icon)
+    // Icon rotation
     val iconRotation by animateFloatAsState(
         targetValue = 0f,
         animationSpec = tween(400, easing = EaseInOutCubic),
@@ -140,7 +140,7 @@ fun ThemeToggle(
                 .background(thumbColor),
             contentAlignment = Alignment.Center
         ) {
-            // Sun or Moon icon (Figma PNGs — no tint override)
+            // Sun or Moon icon
             Icon(
                 painter = if (isDark) ClientIcons.theme_dark() else ClientIcons.theme_light(),
                 contentDescription = if (isDark) "Dark theme" else "Light theme",
