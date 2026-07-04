@@ -45,6 +45,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import it.diunito.pepper.ui.theme.ClientIcons
 import it.diunito.pepper.ui.theme.ClientTheme
@@ -60,6 +61,9 @@ fun AppButton(
     cornerRadius: Dp = 16.dp,
     myIcon: Painter? = null,
     icon: ImageVector? = null,
+    iconSize: Dp = ButtonIconSize,
+    fontSize: TextUnit = TextUnit.Unspecified,
+    innerShadowColor: Color? = null,
     enabled: Boolean = true
 ) {
     val shape = RoundedCornerShape(cornerRadius)
@@ -121,6 +125,16 @@ fun AppButton(
                     cornerRadius = cr
                 )
 
+                // Optional custom inner shadow (solid line) at the top
+                if (innerShadowColor != null) {
+                    val innerShadowHeight = 2.dp.toPx()
+                    drawRoundRect(
+                        color = innerShadowColor,
+                        size = Size(size.width, innerShadowHeight),
+                        cornerRadius = CornerRadius(cr.x, cr.y) // Top rounded
+                    )
+                }
+
                 // Layer 2 — Top-edge highlight (subtle glass reflection)
                 drawRoundRect(
                     brush = Brush.verticalGradient(
@@ -166,12 +180,12 @@ fun AppButton(
                     myIcon != null -> Icon(
                         painter = myIcon,
                         contentDescription = label,
-                        modifier = Modifier.size(ButtonIconSize)
+                        modifier = Modifier.size(iconSize)
                     )
                     icon != null -> Icon(
                         imageVector = icon,
                         contentDescription = label,
-                        modifier = Modifier.size(ButtonIconSize)
+                        modifier = Modifier.size(iconSize)
                     )
                 }
                 if (!label.isNullOrEmpty()) {
@@ -181,7 +195,8 @@ fun AppButton(
                     Text(
                         text = label,
                         style = MaterialTheme.typography.labelLarge.copy(
-                            fontWeight = FontWeight.SemiBold
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = if (fontSize != TextUnit.Unspecified) fontSize else MaterialTheme.typography.labelLarge.fontSize
                         ),
                         maxLines = 1,
                         softWrap = false,

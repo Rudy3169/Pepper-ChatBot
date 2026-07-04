@@ -1,5 +1,6 @@
 package it.diunito.pepper.ui.components.overlay
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,7 +15,10 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import it.diunito.pepper.ui.scripts.AppLanguage
 import it.diunito.pepper.ui.scripts.LanguageHandler
@@ -35,19 +39,22 @@ fun AppScaffold(
     content: @Composable (PaddingValues) -> Unit
 ) {
     CompositionLocalProvider(LocalLanguageHandler provides languageHandler) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            AnimatedMeshBackground()
+        val bgGradient = if (isDark) {
+            Brush.verticalGradient(listOf(Color(0xFF202C33), Color(0xFF111B21)))
+        } else {
+            Brush.verticalGradient(listOf(Color(0xFFFFFFFF), Color(0xFFF3F4F6)))
+        }
+        Box(modifier = Modifier.fillMaxSize().background(bgGradient)) {
             Scaffold(
                 containerColor = androidx.compose.ui.graphics.Color.Transparent,
                 topBar = {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 3.dp, bottom = 3.dp)
-                            .wrapContentHeight()
-                            .padding(horizontal = 8.dp),
-                        horizontalArrangement = Arrangement.End,
-                        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+                            .padding(top = 24.dp, end = 60.dp)
+                            .wrapContentHeight(),
+                        horizontalArrangement = Arrangement.spacedBy(30.dp, Alignment.End),
+                        verticalAlignment = Alignment.CenterVertically
                     ){
                         ThemeToggle(
                             isDark = isDark,

@@ -10,6 +10,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.semantics.contentDescription
@@ -28,7 +29,7 @@ fun FooterLogos(
     height: Dp = 60.dp
 ) {
     Surface(
-        color = MaterialTheme.colorScheme.background,
+        color = if (isDark) Color(0xFF202C33) else Color(0xFFFFFFFF),
         contentColor = MaterialTheme.colorScheme.onSurface,
         tonalElevation = 2.dp,
         shadowElevation = 2.dp

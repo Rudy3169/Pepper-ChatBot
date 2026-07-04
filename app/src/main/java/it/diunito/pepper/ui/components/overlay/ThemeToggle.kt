@@ -54,14 +54,14 @@ fun ThemeToggle(
         label = "thumbOffset"
     )
 
-    // Track gradient endpoints
+    // Track gradient endpoints (now uniform solid color)
     val trackStartColor by animateColorAsState(
-        targetValue = if (isDark) Color(0xFF1A1F35) else AIRyellow.copy(alpha = 0.35f),
+        targetValue = if (isDark) Color(0xFF4B5563) else Color(0xFFE5E7EB),
         animationSpec = tween(400),
         label = "trackStart"
     )
     val trackEndColor by animateColorAsState(
-        targetValue = if (isDark) Color(0xFF2D2B55) else AIRblue.copy(alpha = 0.18f),
+        targetValue = if (isDark) Color(0xFF4B5563) else Color(0xFFE5E7EB),
         animationSpec = tween(400),
         label = "trackEnd"
     )
@@ -80,9 +80,9 @@ fun ThemeToggle(
         label = "iconTint"
     )
 
-    // Icon rotation (sun spins slightly, moon tilts)
+    // Icon rotation (sun spins slightly, moon stays upright for Figma icon)
     val iconRotation by animateFloatAsState(
-        targetValue = if (isDark) -30f else 0f,
+        targetValue = 0f,
         animationSpec = tween(400, easing = EaseInOutCubic),
         label = "iconRotation"
     )
@@ -140,11 +140,11 @@ fun ThemeToggle(
                 .background(thumbColor),
             contentAlignment = Alignment.Center
         ) {
-            // Sun or Moon icon
+            // Sun or Moon icon (Figma PNGs — no tint override)
             Icon(
                 painter = if (isDark) ClientIcons.theme_dark() else ClientIcons.theme_light(),
                 contentDescription = if (isDark) "Dark theme" else "Light theme",
-                tint = iconTint,
+                tint = Color.Unspecified,
                 modifier = Modifier
                     .size(14.dp)
                     .rotate(iconRotation)

@@ -5,20 +5,20 @@ import androidx.compose.ui.res.painterResource
 import it.diunito.pepper.R
 
 object ClientIcons {
-    // languages
+    // languages (Figma circular flags)
     @Composable
     fun lang_flag(lang: String) = if (lang == "it") {
-        R.drawable.flag_eng
+        R.drawable.ic_flag_eng
     } else {
-        R.drawable.flag_ita
+        R.drawable.ic_flag_ita
     }
 
-    // theme switch
+    // theme switch (Figma moon/sun icons)
     @Composable
-    fun theme_dark() = painterResource(R.drawable.ic_theme_dark)
+    fun theme_dark() = painterResource(R.drawable.ic_dark_mode)
 
     @Composable
-    fun theme_light() = painterResource(R.drawable.ic_theme_light)
+    fun theme_light() = painterResource(R.drawable.ic_light_mode)
 
     // navigation
     @Composable
@@ -28,9 +28,15 @@ object ClientIcons {
     fun cook() = painterResource(R.drawable.ic_cook)
 
 
-    // custom theme icons
+    // custom theme icons (Figma microphone)
     @Composable
-    fun mic() = painterResource(R.drawable.ic_mic)
+    fun mic() = painterResource(R.drawable.ic_mic_black)
+
+    @Composable
+    fun micWhite() = painterResource(R.drawable.ic_mic_white)
+
+    @Composable
+    fun send() = painterResource(R.drawable.ic_send)
 
     @Composable
     fun pause() = painterResource(R.drawable.ic_pause)
@@ -48,5 +54,8 @@ object ClientPictures {
     fun unito(isDark:Boolean) = if (isDark) painterResource(R.drawable.unito_dark) else painterResource(R.drawable.unito_light)
 
     @Composable
-    fun background(isDark:Boolean) = if (isDark) R.drawable.chatbot_chat_dark else R.drawable.chatbot_chat_light
+    fun wallpaperDark() = painterResource(R.drawable.ic_pepper) // placeholder — wallpaper removed
+
+    @Composable
+    fun wallpaperLight() = painterResource(R.drawable.ic_pepper) // placeholder — wallpaper removed
 }
