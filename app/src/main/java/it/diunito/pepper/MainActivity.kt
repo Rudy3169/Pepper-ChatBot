@@ -19,6 +19,7 @@ import it.diunito.pepper.ui.scripts.LanguageHandler
 import it.diunito.pepper.ui.scripts.LocalLanguageHandler
 import it.diunito.pepper.ui.scripts.loadLanguages
 import it.diunito.pepper.ui.theme.ClientTheme
+import androidx.navigation.compose.currentBackStackEntryAsState
 
 class MainActivity : ComponentActivity() {
 
@@ -44,10 +45,16 @@ class MainActivity : ComponentActivity() {
             var forceDark by rememberSaveable { mutableStateOf<Boolean?>(null) }
             val effectiveDark = forceDark ?: isSystemInDarkTheme()
 
+            val navController = androidx.navigation.compose.rememberNavController()
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentRoute = navBackStackEntry?.destination?.route
+            val isChatScreen = currentRoute == it.diunito.pepper.ui.navigation.Screen.Chat.route
+
             ClientTheme(forceDark = forceDark) {
                 CompositionLocalProvider(LocalLanguageHandler provides languageHandler) {
                     AppScaffold(
                         isDark = effectiveDark,
+                        isChatScreen = isChatScreen,
                         onToggleTheme = {
                             forceDark = !effectiveDark
                         },
@@ -59,7 +66,10 @@ class MainActivity : ComponentActivity() {
                         onUnitoClick = { null },
                         languageHandler = languageHandler
                     ) { innerPadding ->
-                        AppNavGraph(modifier = Modifier.padding(innerPadding))
+                        AppNavGraph(
+                            modifier = Modifier.padding(innerPadding),
+                            navController = navController
+                        )
                     }
                 }
             }

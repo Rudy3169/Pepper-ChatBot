@@ -18,6 +18,14 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.ImageShader
+import androidx.compose.ui.graphics.ShaderBrush
+import androidx.compose.ui.graphics.TileMode
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -128,30 +136,44 @@ fun EngageScreen(
         modifier = modifier.fillMaxSize()
     ) {
         // ══════════════════════════════════════════════
-        // LEFT: Chat area (larger — 65% of the screen)
+        // Chat area (100% of the screen)
         // ══════════════════════════════════════════════
-        Column(
-            modifier = Modifier
-                .weight(1.5f)
-                .fillMaxHeight()
-                .padding(12.dp, 12.dp, 0.dp, 12.dp)
+        Box(
+            modifier = Modifier.fillMaxSize()
         ) {
-            Surface(
-                tonalElevation = if (isDark) 0.dp else 1.dp,
-                shape = RoundedCornerShape(16.dp),
-                color = MaterialTheme.colorScheme.surface,
-                modifier = Modifier.fillMaxSize()
+            // Background Image (Tiled 85%)
+            val context = LocalContext.current
+            val bgResId = if (isDark) R.drawable.chatbot_chat_dark else R.drawable.chatbot_chat_light
+            val bgBrush = androidx.compose.runtime.remember(bgResId) {
+                val original = BitmapFactory.decodeResource(context.resources, bgResId)
+                val scaled = Bitmap.createScaledBitmap(
+                    original,
+                    (original.width * 0.85).toInt(),
+                    (original.height * 0.85).toInt(),
+                    true
+                )
+                ShaderBrush(
+                    ImageShader(
+                        scaled.asImageBitmap(),
+                        TileMode.Repeated,
+                        TileMode.Repeated
+                    )
+                )
+            }
+            
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(bgBrush)
+            )
+            
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(12.dp)
             ) {
                 Column(Modifier.fillMaxSize()) {
-                    ChatHeader(
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    HorizontalDivider(
-                        Modifier,
-                        DividerDefaults.Thickness,
-                        color = if (isDark) MaterialTheme.colorScheme.outline.copy(alpha = 0.15f)
-                        else MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
-                    )
+                    // Header is now in AppScaffold
                     ChatBox(
                         showUserTyping = isUserTyping,
                         showPepperTyping = isPepperTyping,
@@ -159,14 +181,7 @@ fun EngageScreen(
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxWidth()
-                            .then(
-                                if (!isDark) {
-                                    Modifier.border(
-                                        width = 0.5.dp,
-                                        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
-                                    )
-                                } else Modifier
-                            )
+
                     )
                     ChatInputBar(
                         value = input,
@@ -195,206 +210,6 @@ fun EngageScreen(
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
-            }
-        }
-
-        // Vertical separator
-        VerticalDivider(
-            modifier = Modifier
-                .fillMaxHeight()
-                .padding(vertical = 32.dp),
-            thickness = 1.dp,
-            color = MaterialTheme.colorScheme.outline.copy(
-                alpha = if (isDark) 0.12f else 0.2f
-            )
-        )
-
-        // ══════════════════════════════════════════════
-        // RIGHT: Pepper Status Panel (~35% of the screen)
-        // ══════════════════════════════════════════════
-        Column(
-            modifier = Modifier
-                .weight(0.8f)
-                .fillMaxHeight()
-                .padding(12.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            // ── Top: Pepper Avatar + Status ──
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                // Spacer to slightly lower the avatar from the top edge
-                Spacer(modifier = Modifier.weight(0.5f))
-
-                // Animated Pepper avatar with glow
-                Box(
-                    modifier = Modifier
-                        .graphicsLayer {
-                            translationY = floatingOffset * 6f * density
-                        }
-                        .size(140.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    // Glow behind avatar
-                    Box(
-                        modifier = Modifier
-                            .size(140.dp)
-                            .drawBehind {
-                                drawCircle(
-                                    brush = Brush.radialGradient(
-                                        colors = listOf(
-                                            statusColor.copy(alpha = 0.15f),
-                                            statusColor.copy(alpha = 0.05f),
-                                            Color.Transparent
-                                        ),
-                                        radius = size.maxDimension * 0.65f
-                                    )
-                                )
-                            }
-                    )
-                    // Avatar circle
-                    Box(
-                        modifier = Modifier
-                            .size(110.dp)
-                            .clip(CircleShape)
-                            .background(
-                                if (isDark) MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
-                                else MaterialTheme.colorScheme.surface
-                            )
-                            .border(
-                                width = 2.dp,
-                                color = statusColor.copy(alpha = 0.4f),
-                                shape = CircleShape
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_pepper),
-                            contentDescription = "Pepper",
-                            modifier = Modifier.size(80.dp)
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                // Status indicator
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(8.dp)
-                            .clip(CircleShape)
-                            .background(statusColor)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = pepperStatus,
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontWeight = FontWeight.Medium,
-                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f)
-                        )
-                    )
-                }
-
-                // Flexible spacer to push the avatar up and suggestions down
-                Spacer(modifier = Modifier.weight(1f))
-
-                // ── Suggestion chips ──
-                Row(
-                    modifier = Modifier.padding(bottom = 12.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Text(
-                        text = "💡",
-                        fontSize = 20.sp
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text(
-                        text = labels.suggestionsTitle,
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            fontWeight = FontWeight.Medium,
-                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
-                        )
-                    )
-                }
-
-                FlowRow(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    suggestions.forEach { suggestion ->
-                        SuggestionChip(
-                            text = suggestion,
-                            isDark = isDark,
-                            enabled = !isUserTyping && !isPepperTyping,
-                            onClick = {
-                                viewModel.stopSpeech()
-                                viewModel.dialogueTurn(
-                                    updateUserTyping = { isUserTyping = it },
-                                    updatePepperTyping = { isPepperTyping = it },
-                                    content = suggestion,
-                                )
-                            }
-                        )
-                    }
-                }
-                
-                // Spacer below suggestions to lift them towards the middle
-                Spacer(modifier = Modifier.weight(1.2f))
-            }
-
-            // ── Bottom: "Alla Prossima" button with context ──
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 8.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                HorizontalDivider(
-                    modifier = Modifier
-                        .fillMaxWidth(0.6f)
-                        .padding(bottom = 12.dp),
-                    thickness = 0.5.dp,
-                    color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
-                )
-
-                // Context text explaining the button
-                Text(
-                    text = labels.engageWarning,
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
-                        textAlign = TextAlign.Center
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 12.dp, end = 12.dp, bottom = 10.dp)
-                )
-
-                AppButton(
-                    label = labels.goodbye,
-                    modifier = Modifier.fillMaxWidth(0.85f),
-                    onClick = {
-                        viewModel.stopSpeech()
-                        viewModel.flush(
-                            updateUserTyping = { isUserTyping = it },
-                            updatePepperTyping = { isPepperTyping = it },
-                        )
-                    },
-                    colors = AppButtonColorsRed(),
-                    icon = Icons.Outlined.Refresh
-                )
             }
         }
     }

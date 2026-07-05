@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import it.diunito.pepper.ui.theme.ClientTheme
 
 @Composable
@@ -46,35 +47,29 @@ fun ChatMessageRow(
             horizontalArrangement = if (side == BubbleSide.LEFT) Arrangement.Start else Arrangement.End,
             verticalAlignment = Alignment.Top
         ) {
-            if (sender == Sender.PEPPER) {
-                PepperAvatar()
-                Spacer(Modifier.width(8.dp))
+            val formatter = java.time.format.DateTimeFormatter.ofPattern("HH:mm")
+            val timeString = java.time.LocalTime.now().format(formatter)
 
-                MessageBubble(
-                    side = BubbleSide.LEFT,
-                    containerColor = containerColor,
-                    maxWidth = maxBubbleWidth
-                ) {
+            MessageBubble(
+                side = side,
+                containerColor = containerColor,
+                maxWidth = maxBubbleWidth
+            ) {
+                androidx.compose.foundation.layout.Column {
                     Text(
                         text = msg.text,
                         style = MaterialTheme.typography.bodyLarge,
                         color = contentColor
                     )
-                }
-            } else {
-                MessageBubble(
-                    side = BubbleSide.RIGHT,
-                    containerColor = containerColor,
-                    maxWidth = maxBubbleWidth
-                ) {
                     Text(
-                        text = msg.text,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = contentColor
+                        text = timeString,
+                        style = MaterialTheme.typography.labelSmall.copy(
+                            fontSize = 10.sp
+                        ),
+                        color = contentColor.copy(alpha = 0.5f),
+                        modifier = Modifier.align(Alignment.End).padding(top = 2.dp)
                     )
                 }
-                Spacer(Modifier.width(8.dp))
-                UserAvatar()
             }
         }
     }

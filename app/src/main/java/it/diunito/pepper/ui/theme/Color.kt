@@ -55,6 +55,6 @@ val OnlineGreen = Color(0xFF25D366)
 
 // Light mode chat-specific
 val BubbleLightIncoming = white // White for Pepper
-val BubbleLightOutgoing = AIRblue // Brand Blue for User
+val BubbleLightOutgoing = Color(0xFFE2F7CB) // Light green for User
 val OnBubbleLightIncoming = Color(0xFF1A1A1A)
-val OnBubbleLightOutgoing = white
+val OnBubbleLightOutgoing = Color(0xFF1A1A1A)

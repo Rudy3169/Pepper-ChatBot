@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -44,7 +46,6 @@ import it.diunito.pepper.ui.theme.InputDarkField
 import it.diunito.pepper.ui.theme.white
 import it.diunito.pepper.ui.scripts.LocalLanguageHandler as lang
 
-
 @Composable
 fun ChatInputBar(
     value: String,
@@ -61,92 +62,98 @@ fun ChatInputBar(
 
     // Adaptive colors
     val barBackground = if (isDark) HeaderDark else MaterialTheme.colorScheme.surface
-    val fieldBackground = if (isDark) InputDarkField else MaterialTheme.colorScheme.background
+    val fieldBackground = if (isDark) InputDarkField else white
     val textColor = if (isDark) white.copy(alpha = 0.92f) else MaterialTheme.colorScheme.onBackground
     val placeholderColor = if (isDark) white.copy(alpha = 0.4f) else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
 
     val hasText = value.isNotBlank()
 
     Surface(
-        tonalElevation = if (isDark) 0.dp else 1.dp,
-        color = barBackground
+        tonalElevation = 0.dp,
+        color = Color.Transparent
     ) {
         Row(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp, vertical = 6.dp),
-            verticalAlignment = Alignment.CenterVertically
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.Bottom
         ) {
-            var tfModifier = Modifier.weight(1f)
-            if (focusRequester != null) tfModifier = tfModifier.focusRequester(focusRequester)
+            Row(
+                modifier = Modifier.widthIn(max = 860.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                var tfModifier = Modifier.weight(1f)
+                if (focusRequester != null) tfModifier = tfModifier.focusRequester(focusRequester)
 
-            TextField(
-                value = value,
-                onValueChange = onValueChange,
-                modifier = tfModifier,
-                placeholder = {
-                    Text(
-                        text = labels.chatInputPlaceholder,
-                        color = placeholderColor
-                    )
-                },
-                singleLine = true,
-                shape = RoundedCornerShape(24.dp),
-                textStyle = MaterialTheme.typography.bodyLarge.copy(color = textColor),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = fieldBackground,
-                    unfocusedContainerColor = fieldBackground,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    cursorColor = MaterialTheme.colorScheme.primary
-                )
-            )
-
-            Spacer(Modifier.width(8.dp))
-
-            // Conversational UI logic: microphone icon when input is empty, send icon when text is present
-            AnimatedContent(
-                targetState = hasText,
-                transitionSpec = {
-                    (fadeIn() + scaleIn(initialScale = 0.8f))
-                        .togetherWith(fadeOut() + scaleOut(targetScale = 0.8f))
-                },
-                label = "mic_send_swap",
-                modifier = Modifier.padding(bottom = 4.dp)
-            ) { showSend ->
-                Surface(
-                    shape = CircleShape,
-                    color = when {
-                        showSend -> MaterialTheme.colorScheme.primary
-                        !isMicEnabled -> MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
-                        else -> MaterialTheme.colorScheme.primary
-                    },
-                    shadowElevation = if (isDark || (!showSend && !isMicEnabled)) 0.dp else 1.dp,
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clip(CircleShape)
-                        .clickable(
-                            enabled = if (showSend) true else isMicEnabled,
-                            onClick = { if (showSend) onSend() else onMic?.invoke() }
+                TextField(
+                    value = value,
+                    onValueChange = onValueChange,
+                    modifier = tfModifier,
+                    placeholder = {
+                        Text(
+                            text = labels.chatInputPlaceholder,
+                            color = placeholderColor
                         )
-                ) {
-                    Box(contentAlignment = Alignment.Center) {
-                        if (showSend) {
-                            // Send button
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.Send,
-                                contentDescription = "Send",
-                                tint = white,
-                                modifier = Modifier.size(22.dp)
+                    },
+                    singleLine = true,
+                    shape = RoundedCornerShape(24.dp),
+                    textStyle = MaterialTheme.typography.bodyLarge.copy(color = textColor),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = fieldBackground,
+                        unfocusedContainerColor = fieldBackground,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        cursorColor = MaterialTheme.colorScheme.primary
+                    )
+                )
+
+                Spacer(Modifier.width(8.dp))
+
+                // Conversational UI logic: microphone icon when input is empty, send icon when text is present
+                AnimatedContent(
+                    targetState = hasText,
+                    transitionSpec = {
+                        (fadeIn() + scaleIn(initialScale = 0.8f))
+                            .togetherWith(fadeOut() + scaleOut(targetScale = 0.8f))
+                    },
+                    label = "mic_send_swap",
+                    modifier = Modifier.padding(bottom = 4.dp)
+                ) { showSend ->
+                    Surface(
+                        shape = CircleShape,
+                        color = when {
+                            showSend -> Color(0xFF008069)
+                            !isMicEnabled -> Color(0xFF008069).copy(alpha = 0.3f)
+                            else -> Color(0xFF008069)
+                        },
+                        shadowElevation = if (isDark || (!showSend && !isMicEnabled)) 0.dp else 1.dp,
+                        modifier = Modifier
+                            .size(48.dp)
+                            .clip(CircleShape)
+                            .clickable(
+                                enabled = if (showSend) true else isMicEnabled,
+                                onClick = { if (showSend) onSend() else onMic?.invoke() }
                             )
-                        } else {
-                            // Mic button
-                            Icon(
-                                painter = ClientIcons.mic(),
-                                contentDescription = labels.talk,
-                                tint = if (isMicEnabled) white else white.copy(alpha = 0.5f),
-                                modifier = Modifier.size(22.dp)
-                            )
+                    ) {
+                        Box(contentAlignment = Alignment.Center) {
+                            if (showSend) {
+                                // Send button
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.Send,
+                                    contentDescription = "Send",
+                                    tint = white,
+                                    modifier = Modifier.size(22.dp)
+                                )
+                            } else {
+                                // Mic button
+                                Icon(
+                                    painter = ClientIcons.mic(),
+                                    contentDescription = labels.talk,
+                                    tint = if (isMicEnabled) white else white.copy(alpha = 0.5f),
+                                    modifier = Modifier.size(22.dp)
+                                )
+                            }
                         }
                     }
                 }

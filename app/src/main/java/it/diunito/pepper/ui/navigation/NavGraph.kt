@@ -19,8 +19,10 @@ sealed class Screen(val route: String) {
 }
 
 @Composable
-fun AppNavGraph(modifier: Modifier = Modifier) {
-    val navController = rememberNavController()
+fun AppNavGraph(
+    modifier: Modifier = Modifier,
+    navController: androidx.navigation.NavHostController = rememberNavController()
+) {
     
     NavHost(
         navController = navController,
