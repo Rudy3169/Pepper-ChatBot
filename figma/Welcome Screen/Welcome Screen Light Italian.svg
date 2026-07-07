@@ -20,12 +20,12 @@
 <path d="M565 746H715V794H565V746Z" fill="url(#pattern2_52_641)"/>
 <path d="M980 742H1128V798H980V742Z" fill="url(#pattern3_52_641)"/>
 <path d="M140 740H290V800H140V740Z" fill="url(#pattern4_52_641)"/>
-<rect x="1102" y="24" width="56" height="32" rx="16" fill="#E5E7EB"/>
+<rect x="1141" y="24" width="56" height="32" rx="16" fill="#E5E7EB"/>
 <g filter="url(#filter2_d_52_641)">
-<circle cx="1118" cy="40" r="14" fill="white"/>
+<circle cx="1157" cy="40" r="14" fill="white"/>
 </g>
-<rect x="1108" y="30" width="20" height="20" fill="url(#pattern5_52_641)"/>
-<circle cx="1204" cy="40" r="15.5" fill="url(#pattern6_52_641)" stroke="#E5E7EB"/>
+<rect x="1147" y="30" width="20" height="20" fill="url(#pattern5_52_641)"/>
+<circle cx="1243" cy="40" r="15.5" fill="url(#pattern6_52_641)" stroke="#E5E7EB"/>
 <defs>
 <filter id="filter0_d_52_641" x="466" y="539" width="347" height="120" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
@@ -61,7 +61,7 @@
 <pattern id="pattern4_52_641" patternContentUnits="objectBoundingBox" width="1" height="1">
 <use xlink:href="#image4_52_641" transform="scale(0.0005 0.00125)"/>
 </pattern>
-<filter id="filter2_d_52_641" x="1100" y="24" width="36" height="36" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter2_d_52_641" x="1139" y="24" width="36" height="36" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
 <feOffset dy="2"/>

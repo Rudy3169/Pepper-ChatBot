@@ -44,8 +44,8 @@ val OnSurfaceVariantDark = white
 val OutlineDark = UNITOgrey
 
 // === Dark Mode Chat Colors (AIRlab-branded conversational UI) ===
-val BubbleDarkIncoming = Color(0xFF242424) // Dark Grey for Pepper
-val BubbleDarkOutgoing = AIRblue // Brand Blue for User
+val BubbleDarkIncoming = Color(0xFF202C33) // Pepper in dark mode
+val BubbleDarkOutgoing = Color(0xFF005C4B) // User in dark mode
 val OnBubbleDarkIncoming = Color(0xFFE9EDEF)
 val OnBubbleDarkOutgoing = white
 val ChatDarkSurface = Color(0xFF121212)
@@ -54,7 +54,7 @@ val HeaderDark = Color(0xFF1A1A1A)
 val OnlineGreen = Color(0xFF25D366)
 
 // Light mode chat-specific
-val BubbleLightIncoming = white // White for Pepper
-val BubbleLightOutgoing = Color(0xFFE2F7CB) // Light green for User
+val BubbleLightIncoming = white // Pepper in light mode
+val BubbleLightOutgoing = Color(0xFFDCF8C6) // User in light mode
 val OnBubbleLightIncoming = Color(0xFF1A1A1A)
 val OnBubbleLightOutgoing = Color(0xFF1A1A1A)

@@ -1,5 +1,10 @@
 package it.diunito.pepper.ui.navigation
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
@@ -39,7 +44,11 @@ fun AppNavGraph(
             )
         }
         
-        composable(Screen.Menu.route) {
+        composable(
+            Screen.Menu.route,
+            enterTransition = { fadeIn(animationSpec = tween(300)) },
+            exitTransition = { fadeOut(animationSpec = tween(300)) }
+        ) {
             WelcomeScreen(
                 onStartChat = {
                     navController.navigate(Screen.Chat.route)
@@ -47,7 +56,11 @@ fun AppNavGraph(
             )
         }
 
-        composable(Screen.Chat.route) {
+        composable(
+            Screen.Chat.route,
+            enterTransition = { fadeIn(animationSpec = tween(300)) },
+            exitTransition = { fadeOut(animationSpec = tween(300)) }
+        ) {
             GuardedBack(navController) {
                 EngageScreen()
             }
