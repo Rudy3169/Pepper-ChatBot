@@ -5,7 +5,7 @@ import androidx.compose.ui.res.painterResource
 import it.diunito.pepper.R
 
 object ClientIcons {
-    // languages (Figma circular flags)
+    // languages
     @Composable
     fun lang_flag(lang: String) = if (lang == "it") {
         R.drawable.ic_flag_eng
@@ -13,7 +13,7 @@ object ClientIcons {
         R.drawable.ic_flag_ita
     }
 
-    // theme switch (Figma moon/sun icons)
+    // theme switch
     @Composable
     fun theme_dark() = painterResource(R.drawable.ic_dark_mode)
 
@@ -28,7 +28,7 @@ object ClientIcons {
     fun cook() = painterResource(R.drawable.ic_cook)
 
 
-    // custom theme icons (Figma microphone)
+    // custom theme icons
     @Composable
     fun mic() = painterResource(R.drawable.ic_mic_black)
 

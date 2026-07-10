@@ -24,7 +24,7 @@ import it.diunito.pepper.ui.theme.OnBubbleDarkOutgoing
 import it.diunito.pepper.ui.theme.OnBubbleLightIncoming
 import it.diunito.pepper.ui.theme.OnBubbleLightOutgoing
 
-// Asymmetric bubble shapes for a conversational UI: differentiated corner radii for message origin
+// Style bubble shapes: smaller corner on the "tail" side, larger everywhere else
 private fun getBubbleShape(side: BubbleSide) = when (side) {
     BubbleSide.LEFT -> RoundedCornerShape(
         topStart = 4.dp, topEnd = 20.dp, bottomEnd = 20.dp, bottomStart = 20.dp
