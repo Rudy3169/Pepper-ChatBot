@@ -24,14 +24,80 @@ import it.diunito.pepper.ui.theme.OnBubbleDarkOutgoing
 import it.diunito.pepper.ui.theme.OnBubbleLightIncoming
 import it.diunito.pepper.ui.theme.OnBubbleLightOutgoing
 
-// Style bubble shapes: smaller corner on the "tail" side, larger everywhere else
-private fun getBubbleShape(side: BubbleSide) = when (side) {
-    BubbleSide.LEFT -> RoundedCornerShape(
-        topStart = 4.dp, topEnd = 20.dp, bottomEnd = 20.dp, bottomStart = 20.dp
-    )
-    BubbleSide.RIGHT -> RoundedCornerShape(
-        topStart = 20.dp, topEnd = 4.dp, bottomEnd = 20.dp, bottomStart = 20.dp
-    )
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.RoundRect
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
+
+class BubbleShape(
+    private val side: BubbleSide,
+    private val hasTail: Boolean
+) : Shape {
+    override fun createOutline(
+        size: Size,
+        layoutDirection: LayoutDirection,
+        density: Density
+    ): Outline {
+        val radius = with(density) { 12.dp.toPx() }
+        val tailWidth = with(density) { 8.dp.toPx() }
+        val tailHeight = with(density) { 8.dp.toPx() }
+        
+        val path = Path()
+
+        if (side == BubbleSide.LEFT) {
+            // Main bubble body
+            val bodyRect = RoundRect(
+                left = tailWidth,
+                top = 0f,
+                right = size.width,
+                bottom = size.height,
+                topLeftCornerRadius = androidx.compose.ui.geometry.CornerRadius(if (hasTail) 0f else radius),
+                topRightCornerRadius = androidx.compose.ui.geometry.CornerRadius(radius),
+                bottomRightCornerRadius = androidx.compose.ui.geometry.CornerRadius(radius),
+                bottomLeftCornerRadius = androidx.compose.ui.geometry.CornerRadius(radius)
+            )
+            path.addRoundRect(bodyRect)
+
+            if (hasTail) {
+                // Tail on the top left
+                path.moveTo(tailWidth, 0f)
+                path.lineTo(0f, 0f)
+                path.lineTo(tailWidth, tailHeight)
+                path.close()
+            }
+        } else {
+            // Main bubble body
+            val bodyRect = RoundRect(
+                left = 0f,
+                top = 0f,
+                right = size.width - tailWidth,
+                bottom = size.height,
+                topLeftCornerRadius = androidx.compose.ui.geometry.CornerRadius(radius),
+                topRightCornerRadius = androidx.compose.ui.geometry.CornerRadius(if (hasTail) 0f else radius),
+                bottomRightCornerRadius = androidx.compose.ui.geometry.CornerRadius(radius),
+                bottomLeftCornerRadius = androidx.compose.ui.geometry.CornerRadius(radius)
+            )
+            path.addRoundRect(bodyRect)
+
+            if (hasTail) {
+                // Tail on the top right
+                path.moveTo(size.width - tailWidth, 0f)
+                path.lineTo(size.width, 0f)
+                path.lineTo(size.width - tailWidth, tailHeight)
+                path.close()
+            }
+        }
+        
+        return Outline.Generic(path)
+    }
+}
+
+private fun getBubbleShape(side: BubbleSide, hasTail: Boolean): Shape {
+    return BubbleShape(side, hasTail)
 }
 
 // Dedicated chat color logic with separate dark-mode palette
@@ -60,10 +126,11 @@ fun MessageBubble(
     side: BubbleSide,
     containerColor: Color,
     maxWidth: Dp = 420.dp,
+    hasTail: Boolean = true,
     content: @Composable RowScope.() -> Unit
 ) {
     val isDark = LocalIsDark.current
-    val shape = getBubbleShape(side)
+    val shape = getBubbleShape(side, hasTail)
 
     Card(
         colors = CardDefaults.cardColors(containerColor = containerColor),
@@ -88,9 +155,11 @@ fun MessageBubble(
                 }
             )
     ) {
+        val startPadding = if (side == BubbleSide.LEFT) 22.dp else 14.dp
+        val endPadding = if (side == BubbleSide.RIGHT) 22.dp else 14.dp
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
+            modifier = Modifier.padding(start = startPadding, end = endPadding, top = 10.dp, bottom = 10.dp),
             content = content
         )
     }

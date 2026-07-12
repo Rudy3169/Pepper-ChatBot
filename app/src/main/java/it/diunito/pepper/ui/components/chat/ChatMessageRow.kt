@@ -30,7 +30,8 @@ fun ChatMessageRow(
     modifier: Modifier = Modifier,
     msg: ChatMessage,
     maxBubbleWidth: Dp = 420.dp,
-    sender: Sender = msg.sender // true if Pepper, false if user
+    sender: Sender = msg.sender, // true if Pepper, false if user
+    hasTail: Boolean = true
 ) {
     val side = if(sender == Sender.PEPPER) BubbleSide.LEFT else BubbleSide.RIGHT
     val (containerColor, contentColor) = bubbleColor(sender)
@@ -53,7 +54,8 @@ fun ChatMessageRow(
             MessageBubble(
                 side = side,
                 containerColor = containerColor,
-                maxWidth = maxBubbleWidth
+                maxWidth = maxBubbleWidth,
+                hasTail = hasTail
             ) {
                 androidx.compose.foundation.layout.Column {
                     Text(
