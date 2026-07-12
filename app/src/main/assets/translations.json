@@ -23,7 +23,8 @@
     "suggestion2": "Come stai oggi?",
     "suggestion3": "Raccontami una barzelletta",
     "suggestion4": "Cosa sai fare?",
-    "suggestionsTitle": "Prova a chiedermi:"
+    "suggestionsTitle": "Prova a chiedermi:",
+    "headerTyping": "Sta scrivendo..."
   },
   "en": {
     "chatTitle": "Our conversation",
@@ -49,6 +50,7 @@
     "suggestion2": "How are you today?",
     "suggestion3": "Tell me a joke",
     "suggestion4": "What can you do?",
-    "suggestionsTitle": "Try asking me:"
+    "suggestionsTitle": "Try asking me:",
+    "headerTyping": "Typing..."
   }
 }

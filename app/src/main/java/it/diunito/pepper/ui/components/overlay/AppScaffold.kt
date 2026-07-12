@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import it.diunito.pepper.ui.scripts.AppLanguage
 import it.diunito.pepper.ui.scripts.LanguageHandler
+import androidx.compose.runtime.mutableStateOf
 import it.diunito.pepper.ui.scripts.LocalLanguageHandler
 import androidx.compose.ui.draw.clip
 import androidx.compose.material3.Surface
@@ -41,6 +42,9 @@ import androidx.compose.animation.core.tween
 
 // make isDark visible to all
 val LocalIsDark = compositionLocalOf { false }
+val LocalPepperTyping = compositionLocalOf<androidx.compose.runtime.MutableState<Boolean>> {
+    error("No LocalPepperTyping provided")
+}
 
 @Composable
 fun AppScaffold(
@@ -227,11 +231,18 @@ fun AppScaffold(
                                                         ),
                                                         color = if (isDark) Color.White else Color.Black
                                                     )
-                                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                                    Row(
+                                                        verticalAlignment = Alignment.CenterVertically,
+                                                        modifier = Modifier.padding(top = 2.dp)
+                                                    ) {
+                                                        val pepperTyping = LocalPepperTyping.current.value
+                                                        val headerLabels = LocalLanguageHandler.current.labels.collectAsState().value
+                                                        val statusText = if (pepperTyping) headerLabels.headerTyping else "Online"
+                                                        val statusColor = if (isDark) Color(0xFF8696A0) else Color(0xFF667781)
                                                         androidx.compose.material3.Text(
-                                                            text = "Online",
+                                                            text = statusText,
                                                             style = androidx.compose.material3.MaterialTheme.typography.bodySmall,
-                                                            color = if (isDark) Color(0xFF8696A0) else Color(0xFF667781)
+                                                            color = statusColor
                                                         )
                                                     }
                                                 }

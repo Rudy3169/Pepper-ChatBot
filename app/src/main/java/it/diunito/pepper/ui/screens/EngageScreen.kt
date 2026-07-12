@@ -71,6 +71,8 @@ import it.diunito.pepper.ui.components.chat.ChatHeader
 import it.diunito.pepper.ui.components.chat.ChatInputBar
 import it.diunito.pepper.ui.components.chat.ChatMessage
 import it.diunito.pepper.ui.components.overlay.LocalIsDark
+import it.diunito.pepper.ui.components.overlay.LocalPepperTyping
+import androidx.compose.runtime.CompositionLocalProvider
 import it.diunito.pepper.ui.theme.AIRblue
 import it.diunito.pepper.ui.theme.OnlineGreen
 import it.diunito.pepper.ui.theme.UNITOred
@@ -88,7 +90,7 @@ fun EngageScreen(
     val isDark = LocalIsDark.current
 
     var isUserTyping: Boolean by remember { mutableStateOf(false) }
-    var isPepperTyping: Boolean by remember { mutableStateOf(false) }
+    var isPepperTyping: Boolean by LocalPepperTyping.current
 
     // load available languages
     val labels = lang.current.labels.collectAsState().value

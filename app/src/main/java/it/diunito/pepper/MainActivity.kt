@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import it.diunito.pepper.ui.components.overlay.AppScaffold
+import it.diunito.pepper.ui.components.overlay.LocalPepperTyping
 import it.diunito.pepper.ui.navigation.AppNavGraph
 import it.diunito.pepper.ui.scripts.AppLanguage
 import it.diunito.pepper.ui.scripts.LanguageHandler
@@ -51,7 +53,11 @@ class MainActivity : ComponentActivity() {
             val isChatScreen = currentRoute == it.diunito.pepper.ui.navigation.Screen.Chat.route
 
             ClientTheme(forceDark = forceDark) {
-                CompositionLocalProvider(LocalLanguageHandler provides languageHandler) {
+                val pepperTypingState = remember { mutableStateOf(false) }
+                CompositionLocalProvider(
+                    LocalLanguageHandler provides languageHandler,
+                    LocalPepperTyping provides pepperTypingState
+                ) {
                     AppScaffold(
                         isDark = effectiveDark,
                         isChatScreen = isChatScreen,
