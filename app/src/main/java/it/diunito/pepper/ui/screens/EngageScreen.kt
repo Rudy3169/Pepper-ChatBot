@@ -87,6 +87,7 @@ fun EngageScreen(
 ) {
     // load chat messages
     val messages: List<ChatMessage> by viewModel.chat.observeAsState(emptyList())
+    val isProcessing by viewModel.isProcessing.collectAsState()
     val isDark = LocalIsDark.current
 
     var isUserTyping: Boolean by remember { mutableStateOf(false) }
@@ -195,6 +196,7 @@ fun EngageScreen(
                                     updateUserTyping = { isUserTyping = it },
                                     updatePepperTyping = { isPepperTyping = it },
                                     content = text,
+                                    errorMessage = labels.pepperConnectionError,
                                 )
                                 input = ""
                             }
@@ -204,9 +206,17 @@ fun EngageScreen(
                             viewModel.dialogueTurn(
                                 updateUserTyping = { isUserTyping = it },
                                 updatePepperTyping = { isPepperTyping = it },
+                                errorMessage = labels.pepperConnectionError,
                             )
                         },
                         isMicEnabled = !isUserTyping && !isPepperTyping,
+                        isProcessing = isProcessing,
+                        onStop = {
+                            viewModel.cancelDialogueTurn(
+                                updateUserTyping = { isUserTyping = it },
+                                updatePepperTyping = { isPepperTyping = it }
+                            )
+                        },
                         focusRequester = inputFocus,
                         modifier = Modifier.fillMaxWidth()
                     )

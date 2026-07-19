@@ -28,8 +28,6 @@ fun TypingRow(
         verticalAlignment = Alignment.Top
     ) {
         if (isMessageFromPepper) {
-            PepperAvatar()
-            Spacer(Modifier.width(8.dp))
             MessageBubble(
                 side = BubbleSide.LEFT,
                 containerColor = containerColor,

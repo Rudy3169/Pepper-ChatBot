@@ -48,8 +48,8 @@ fun ChatMessageRow(
             horizontalArrangement = if (side == BubbleSide.LEFT) Arrangement.Start else Arrangement.End,
             verticalAlignment = Alignment.Top
         ) {
-            val formatter = java.time.format.DateTimeFormatter.ofPattern("HH:mm")
-            val timeString = java.time.LocalTime.now().format(formatter)
+            val timeString = java.text.SimpleDateFormat("HH:mm", java.util.Locale.getDefault())
+                .format(java.util.Date(msg.timestamp))
 
             MessageBubble(
                 side = side,

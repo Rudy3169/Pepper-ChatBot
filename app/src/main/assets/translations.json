@@ -24,7 +24,8 @@
     "suggestion3": "Raccontami una barzelletta",
     "suggestion4": "Cosa sai fare?",
     "suggestionsTitle": "Prova a chiedermi:",
-    "headerTyping": "Sta scrivendo..."
+    "headerTyping": "Sta scrivendo...",
+    "pepperConnectionError": "Scusa, in questo momento non riesco a risponderti. Possiamo riprovare tra poco?"
   },
   "en": {
     "chatTitle": "Our conversation",
@@ -51,6 +52,7 @@
     "suggestion3": "Tell me a joke",
     "suggestion4": "What can you do?",
     "suggestionsTitle": "Try asking me:",
-    "headerTyping": "Typing..."
+    "headerTyping": "Typing...",
+    "pepperConnectionError": "Sorry, I can't answer you right now. Can we try again in a little bit?"
   }
 }

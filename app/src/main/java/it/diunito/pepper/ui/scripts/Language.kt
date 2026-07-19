@@ -34,7 +34,8 @@ data class TextLabel(
     val suggestion3: String,
     val suggestion4: String,
     val suggestionsTitle: String,
-    val headerTyping: String
+    val headerTyping: String,
+    val pepperConnectionError: String
 )
 
 @Serializable

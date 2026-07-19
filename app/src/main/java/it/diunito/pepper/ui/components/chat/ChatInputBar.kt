@@ -54,7 +54,9 @@ fun ChatInputBar(
     modifier: Modifier = Modifier,
     focusRequester: FocusRequester? = null,
     onMic: (() -> Unit)? = null,
-    isMicEnabled: Boolean = true
+    isMicEnabled: Boolean = true,
+    isProcessing: Boolean = false,
+    onStop: (() -> Unit)? = null
 ) {
     // recall language labels from LanguageHandler
     val labels = lang.current.labels.collectAsState().value
@@ -90,6 +92,7 @@ fun ChatInputBar(
                     value = value,
                     onValueChange = onValueChange,
                     modifier = tfModifier,
+                    enabled = !isProcessing,
                     placeholder = {
                         Text(
                             text = labels.chatInputPlaceholder,
@@ -102,57 +105,89 @@ fun ChatInputBar(
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = fieldBackground,
                         unfocusedContainerColor = fieldBackground,
+                        disabledContainerColor = fieldBackground.copy(alpha = 0.6f),
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
                         cursorColor = MaterialTheme.colorScheme.primary
                     )
                 )
 
                 Spacer(Modifier.width(8.dp))
 
-                // Conversational UI logic: microphone icon when input is empty, send icon when text is present
+                // Three states: stop (processing), send (has text), mic (no text)
                 AnimatedContent(
-                    targetState = hasText,
+                    targetState = when {
+                        isProcessing -> "stop"
+                        hasText -> "send"
+                        else -> "mic"
+                    },
                     transitionSpec = {
                         (fadeIn() + scaleIn(initialScale = 0.8f))
                             .togetherWith(fadeOut() + scaleOut(targetScale = 0.8f))
                     },
-                    label = "mic_send_swap",
+                    label = "mic_send_stop_swap",
                     modifier = Modifier.padding(bottom = 4.dp)
-                ) { showSend ->
+                ) { state ->
                     Surface(
                         shape = CircleShape,
-                        color = when {
-                            showSend -> Color(0xFF008069)
-                            !isMicEnabled -> Color(0xFF008069).copy(alpha = 0.3f)
-                            else -> Color(0xFF008069)
+                        color = when (state) {
+                            "stop" -> Color(0xFFE53935) // Red for stop
+                            "send" -> Color(0xFF008069)
+                            else -> if (isMicEnabled) Color(0xFF008069) else Color(0xFF008069).copy(alpha = 0.3f)
                         },
-                        shadowElevation = if (isDark || (!showSend && !isMicEnabled)) 0.dp else 1.dp,
+                        shadowElevation = when {
+                            isDark -> 0.dp
+                            state == "mic" && !isMicEnabled -> 0.dp
+                            else -> 1.dp
+                        },
                         modifier = Modifier
                             .size(48.dp)
                             .clip(CircleShape)
                             .clickable(
-                                enabled = if (showSend) true else isMicEnabled,
-                                onClick = { if (showSend) onSend() else onMic?.invoke() }
+                                enabled = when (state) {
+                                    "stop" -> true
+                                    "send" -> true
+                                    else -> isMicEnabled
+                                },
+                                onClick = {
+                                    when (state) {
+                                        "stop" -> onStop?.invoke()
+                                        "send" -> onSend()
+                                        else -> onMic?.invoke()
+                                    }
+                                }
                             )
                     ) {
                         Box(contentAlignment = Alignment.Center) {
-                            if (showSend) {
-                                // Send button
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.Filled.Send,
-                                    contentDescription = "Send",
-                                    tint = white,
-                                    modifier = Modifier.size(22.dp)
-                                )
-                            } else {
-                                // Mic button
-                                Icon(
-                                    painter = ClientIcons.mic(),
-                                    contentDescription = labels.talk,
-                                    tint = if (isMicEnabled) white else white.copy(alpha = 0.5f),
-                                    modifier = Modifier.size(22.dp)
-                                )
+                            when (state) {
+                                "stop" -> {
+                                    // Stop button (filled square)
+                                    Box(
+                                        modifier = Modifier
+                                            .size(16.dp)
+                                            .clip(RoundedCornerShape(3.dp))
+                                            .background(white)
+                                    )
+                                }
+                                "send" -> {
+                                    // Send button
+                                    Icon(
+                                        imageVector = Icons.AutoMirrored.Filled.Send,
+                                        contentDescription = "Send",
+                                        tint = white,
+                                        modifier = Modifier.size(22.dp)
+                                    )
+                                }
+                                else -> {
+                                    // Mic button
+                                    Icon(
+                                        painter = ClientIcons.mic(),
+                                        contentDescription = labels.talk,
+                                        tint = if (isMicEnabled) white else white.copy(alpha = 0.5f),
+                                        modifier = Modifier.size(22.dp)
+                                    )
+                                }
                             }
                         }
                     }
