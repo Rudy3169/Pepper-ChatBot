@@ -36,6 +36,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.sp
 import it.diunito.pepper.R
 import it.diunito.pepper.ui.components.buttons.AppButton
@@ -63,6 +64,12 @@ fun WelcomeScreen(
 ) {
     val labels = LocalLanguageHandler.current.labels.collectAsState().value
     val isDark = LocalIsDark.current
+
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.toFloat()
+    // Compute a scaling factor for small screens (e.g. landscape tablet)
+    // 800dp is our reference safe height.
+    val scale = if (screenHeight < 800f) screenHeight / 800f else 1f
 
     // Title/subtitle colors
     val titleColor = if (isDark) Color(0xFFE9EDEF) else Color(0xFF2F3437)
@@ -148,7 +155,7 @@ fun WelcomeScreen(
                     translationY =
                         iconOffsetY.value * density + floatingOffset * 8f * density
                 }
-                .size(180.dp)
+                .size(180.dp * scale)
                 .clip(CircleShape)
                 .background(AvatarCircleColor),
             contentAlignment = Alignment.Center
@@ -156,18 +163,18 @@ fun WelcomeScreen(
             Image(
                 painter = painterResource(id = R.drawable.ic_pepper),
                 contentDescription = "Pepper",
-                modifier = Modifier.size(130.dp)
+                modifier = Modifier.size(130.dp * scale)
             )
         }
 
-        Spacer(modifier = Modifier.height(36.dp))
+        Spacer(modifier = Modifier.height(36.dp * scale))
 
         // ── Title ────────────────────────────────────────────
         Text(
             text = labels.welcomeTitle,
             style = MaterialTheme.typography.displayMedium.copy(
                 fontWeight = FontWeight.Bold,
-                fontSize = 64.sp,
+                fontSize = 64.sp * scale,
                 letterSpacing = (-1).sp,
                 color = titleColor
             ),
@@ -178,15 +185,15 @@ fun WelcomeScreen(
             }
         )
 
-        Spacer(modifier = Modifier.height(14.dp))
+        Spacer(modifier = Modifier.height(14.dp * scale))
 
         // ── Subtitle ─────────────────────────────────────────
         Text(
             text = labels.welcomeSubtitle,
             style = MaterialTheme.typography.bodyLarge.copy(
                 fontWeight = FontWeight.Bold,
-                fontSize = 24.sp,
-                lineHeight = 32.sp,
+                fontSize = 24.sp * scale,
+                lineHeight = 32.sp * scale,
                 color = subtitleColor
             ),
             textAlign = TextAlign.Center,
@@ -198,7 +205,7 @@ fun WelcomeScreen(
                 }
         )
 
-        Spacer(modifier = Modifier.height(48.dp))
+        Spacer(modifier = Modifier.height(48.dp * scale))
 
         // ── CTA button ────────────
         Box(
@@ -213,8 +220,8 @@ fun WelcomeScreen(
                 label = labels.startChatting,
                 onClick = onStartChat,
                 myIcon = painterResource(R.drawable.ic_chat),
-                iconSize = 48.dp,
-                fontSize = 24.sp,
+                iconSize = 48.dp * scale,
+                fontSize = 24.sp * scale,
                 colors = AppButtonColors(
                     fill = ButtonBlue,
                     fillPressed = ButtonBluePressed,
@@ -222,9 +229,9 @@ fun WelcomeScreen(
                     content = Color.White,
                     glow = ButtonBlue.copy(alpha = 0.3f)
                 ),
-                width = 320.dp,
-                height = 80.dp,
-                cornerRadius = 40.dp
+                width = 320.dp * scale,
+                height = 80.dp * scale,
+                cornerRadius = 40.dp * scale
             )
         }
     }
