@@ -96,7 +96,7 @@ fun AppScaffold(
                                             var expanded by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(false) }
                                             var selectedAI by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf("Gemini") }
 
-                                            val allAIs = listOf("Gemini", "ChatGPT", "Claude")
+                                            val allAIs = listOf("Gemini", "ChatGPT", "Claude", "DeepSeek")
                                             var buttonHeightPx by androidx.compose.runtime.remember { androidx.compose.runtime.mutableIntStateOf(0) }
 
                                             // Fixed-width LLM selector button
@@ -119,8 +119,9 @@ fun AppScaffold(
                                                         androidx.compose.foundation.Image(
                                                             painter = androidx.compose.ui.res.painterResource(
                                                                 id = when(selectedAI) {
-                                                                    "ChatGPT" -> it.diunito.pepper.R.drawable.ic_chatgpt
+                                                                    "ChatGPT" -> if (isDark) it.diunito.pepper.R.drawable.ic_chatgpt_white else it.diunito.pepper.R.drawable.ic_chatgpt_black
                                                                     "Claude" -> it.diunito.pepper.R.drawable.ic_claude
+                                                                    "DeepSeek" -> it.diunito.pepper.R.drawable.ic_deepseek
                                                                     else -> it.diunito.pepper.R.drawable.ic_gemini
                                                                 }
                                                             ),
@@ -181,8 +182,9 @@ fun AppScaffold(
                                                                         androidx.compose.foundation.Image(
                                                                             painter = androidx.compose.ui.res.painterResource(
                                                                                 id = when(aiName) {
-                                                                                    "ChatGPT" -> it.diunito.pepper.R.drawable.ic_chatgpt
+                                                                                    "ChatGPT" -> if (isDark) it.diunito.pepper.R.drawable.ic_chatgpt_white else it.diunito.pepper.R.drawable.ic_chatgpt_black
                                                                                     "Claude" -> it.diunito.pepper.R.drawable.ic_claude
+                                                                                    "DeepSeek" -> it.diunito.pepper.R.drawable.ic_deepseek
                                                                                     else -> it.diunito.pepper.R.drawable.ic_gemini
                                                                                 }
                                                                             ),
