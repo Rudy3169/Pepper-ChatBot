@@ -59,7 +59,7 @@ fun SplashScreen(onFinished: () -> Unit) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(iconSize + 100.dp),     // spazio per icona + arco
+                .height(iconSize + 100.dp),     // space for icon + arc
             contentAlignment = Alignment.Center
         ) {
            // Title

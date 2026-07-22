@@ -49,8 +49,8 @@ val Typography = Typography(
     titleSmall    = TextStyle(fontFamily = WorkSans, fontWeight = FontWeight.Normal, fontSize = 14.sp, lineHeight = 20.sp),
 
     // Text → Roboto (400 primary, 300 descriptions)
-    bodyLarge     = TextStyle(fontFamily = Roboto, fontWeight = FontWeight.Normal,  fontSize = 16.sp, lineHeight = 24.sp), // testo principale
-    bodyMedium    = TextStyle(fontFamily = Roboto, fontWeight = FontWeight.Light,   fontSize = 14.sp, lineHeight = 20.sp), // descrizioni
+    bodyLarge     = TextStyle(fontFamily = Roboto, fontWeight = FontWeight.Normal,  fontSize = 16.sp, lineHeight = 24.sp), // main text
+    bodyMedium    = TextStyle(fontFamily = Roboto, fontWeight = FontWeight.Light,   fontSize = 14.sp, lineHeight = 20.sp), // descriptions
     bodySmall     = TextStyle(fontFamily = Roboto, fontWeight = FontWeight.Light,   fontSize = 12.sp, lineHeight = 16.sp),
 
     // Labels (buttons, chip, badge) → Roboto 600

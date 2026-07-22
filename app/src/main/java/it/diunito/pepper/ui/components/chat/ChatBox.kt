@@ -110,7 +110,7 @@ fun ChatBox(
                 }
             }
 
-            // WhatsApp-style Scroll to bottom button
+            // Scroll to bottom button
             AnimatedVisibility(
                 visible = showScrollToBottom,
                 enter = fadeIn() + scaleIn(),

@@ -11,9 +11,11 @@ Questo progetto è stato sviluppato nell'ambito di un tirocinio presso l'Univers
 ## Funzionalità Principali
 
 - **Dialogo Intelligente**: Integrazione con un gateway LLM esterno per risposte contestuali, naturali e fluide.
+- **Selezione LLM Dinamica**: Possibilità di scegliere rapidamente tramite interfaccia quale modello utilizzare (Gemini, ChatGPT, Claude, DeepSeek).
+- **Temi e Personalizzazione**: Supporto nativo per Light Mode e Dark Mode, con interfacce adattive.
 - **Multimodalità**: Supporto completo per input vocale (Speech-to-Text) e testuale tramite un'interfaccia chat ottimizzata per il tablet del robot.
 - **Feedback Robotico**: Gestione dinamica dei feedback del robot (LED oculari e del petto, sintesi vocale) per segnalare le fasi di ascolto e di elaborazione.
-- **Multi-lingua**: Supporto integrato per Italiano e Inglese, con gestione dinamica delle traduzioni e dei temi.
+- **Multi-lingua**: Supporto integrato per Italiano e Inglese, con gestione dinamica delle traduzioni.
 - **Interfaccia Moderna**: Sviluppata interamente con **Jetpack Compose** per garantire una UI fluida, accessibile e accattivante.
 
 ## 🎨 Design dell'Interfaccia (Figma)

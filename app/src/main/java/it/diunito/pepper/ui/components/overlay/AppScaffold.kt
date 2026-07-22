@@ -146,7 +146,7 @@ fun AppScaffold(
                                                     }
                                                 }
 
-                                                // Custom pill-shaped dropdown (Figma design)
+                                                // Custom pill-shaped dropdown
                                                 // Shows only NON-selected LLMs, rendered in a Popup
                                                 if (expanded) {
                                                     val density = androidx.compose.ui.platform.LocalDensity.current
