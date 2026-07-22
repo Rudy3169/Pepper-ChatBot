@@ -97,6 +97,9 @@ fun ChatInputBar(
                     onValueChange = onValueChange,
                     modifier = tfModifier,
                     enabled = !isProcessing,
+                    leadingIcon = {
+                        androidx.compose.foundation.layout.Spacer(modifier = Modifier.width(24.dp))
+                    },
                     placeholder = {
                         Text(
                             text = labels.chatInputPlaceholder,

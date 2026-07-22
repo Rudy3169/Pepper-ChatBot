@@ -104,7 +104,7 @@ fun AppScaffold(
                                                 Surface(
                                                     color = if (isDark) it.diunito.pepper.ui.theme.HeaderDark else Color.White,
                                                     shape = androidx.compose.foundation.shape.RoundedCornerShape(20.dp),
-                                                    border = if (isDark) androidx.compose.foundation.BorderStroke(1.5.dp, Color(0xFFE5E7EB)) else null,
+                                                    border = if (isDark) androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFE5E7EB)) else null,
                                                     shadowElevation = 1.dp,
                                                     modifier = Modifier
                                                         .width(160.dp)
