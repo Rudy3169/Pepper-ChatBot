@@ -24,7 +24,7 @@ fun LanguageSwitch(
     Image(
         painter = painterResource(id = icon),
         contentDescription = "Switch language",
-        contentScale = ContentScale.Fit,
+        contentScale = ContentScale.Crop,
         modifier = Modifier
             .size(32.dp)
             .clip(CircleShape)
