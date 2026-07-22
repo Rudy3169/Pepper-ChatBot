@@ -143,31 +143,20 @@ fun EngageScreen(
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
-            // Background Image (Tiled 85%)
-            val context = LocalContext.current
-            val bgResId = if (isDark) R.drawable.chatbot_chat_dark else R.drawable.chatbot_chat_light
-            val bgBrush = androidx.compose.runtime.remember(bgResId) {
-                val original = BitmapFactory.decodeResource(context.resources, bgResId)
-                val scaled = Bitmap.createScaledBitmap(
-                    original,
-                    (original.width * 0.85).toInt(),
-                    (original.height * 0.85).toInt(),
-                    true
+            // Solid color background for both modes
+            if (isDark) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(it.diunito.pepper.ui.theme.ChatDarkSurface)
                 )
-                ShaderBrush(
-                    ImageShader(
-                        scaled.asImageBitmap(),
-                        TileMode.Repeated,
-                        TileMode.Repeated
-                    )
+            } else {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(it.diunito.pepper.ui.theme.ChatLightBackground)
                 )
             }
-            
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(bgBrush)
-            )
             
             Column(
                 modifier = Modifier

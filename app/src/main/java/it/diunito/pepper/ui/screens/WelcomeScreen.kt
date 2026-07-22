@@ -52,7 +52,7 @@ import kotlinx.coroutines.launch
 // ═══════════════════════════════════════════
 
 // Avatar circle
-private val AvatarCircleColor = Color(0xFFEFF6FF)
+private val AvatarCircleColor = Color(0xFFE2E8F0)
 
 // CTA button
 private val ButtonBlue = Color(0xFF3B82F6)
@@ -157,7 +157,7 @@ fun WelcomeScreen(
                 }
                 .size(180.dp * scale)
                 .clip(CircleShape)
-                .background(AvatarCircleColor),
+                .background(if (isDark) Color(0xFF2B323D) else AvatarCircleColor),
             contentAlignment = Alignment.Center
         ) {
             Image(
@@ -223,11 +223,11 @@ fun WelcomeScreen(
                 iconSize = 48.dp * scale,
                 fontSize = 24.sp * scale,
                 colors = AppButtonColors(
-                    fill = ButtonBlue,
-                    fillPressed = ButtonBluePressed,
-                    border = ButtonBlue.copy(alpha = 0.4f),
+                    fill = if (isDark) Color(0xFFB90016) else Color(0xFFD6001C),
+                    fillPressed = if (isDark) Color(0xFF8B0010) else Color(0xFFA30015),
+                    border = if (isDark) Color(0xFFB90016).copy(alpha = 0.4f) else Color(0xFFD6001C).copy(alpha = 0.4f),
                     content = Color.White,
-                    glow = ButtonBlue.copy(alpha = 0.3f)
+                    glow = if (isDark) Color(0xFFB90016).copy(alpha = 0.3f) else Color(0xFFD6001C).copy(alpha = 0.3f)
                 ),
                 width = 320.dp * scale,
                 height = 80.dp * scale,

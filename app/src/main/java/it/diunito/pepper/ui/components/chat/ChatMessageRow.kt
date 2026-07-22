@@ -63,12 +63,18 @@ fun ChatMessageRow(
                         style = MaterialTheme.typography.bodyLarge,
                         color = contentColor
                     )
+                    val timeColor = if (it.diunito.pepper.ui.components.overlay.LocalIsDark.current) {
+                        if (sender == Sender.PEPPER) it.diunito.pepper.ui.theme.TimeDarkIncoming else it.diunito.pepper.ui.theme.TimeDarkOutgoing
+                    } else {
+                        if (sender == Sender.PEPPER) it.diunito.pepper.ui.theme.TimeLightIncoming else it.diunito.pepper.ui.theme.TimeLightOutgoing
+                    }
+
                     Text(
                         text = timeString,
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontSize = 10.sp
                         ),
-                        color = contentColor.copy(alpha = 0.5f),
+                        color = timeColor,
                         modifier = Modifier.align(Alignment.End).padding(top = 2.dp)
                     )
                 }

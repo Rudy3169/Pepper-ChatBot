@@ -60,7 +60,7 @@ fun AppScaffold(
 ) {
     CompositionLocalProvider(LocalLanguageHandler provides languageHandler) {
         val bgGradient = if (isDark) {
-            Brush.verticalGradient(listOf(Color(0xFF202C33), Color(0xFF111B21)))
+            Brush.verticalGradient(listOf(Color(0xFF1E1F22), Color(0xFF141416)))
         } else {
             Brush.verticalGradient(listOf(Color(0xFFFFFFFF), Color(0xFFF3F4F6)))
         }
@@ -69,7 +69,7 @@ fun AppScaffold(
                 containerColor = androidx.compose.ui.graphics.Color.Transparent,
                 topBar = {
                     Surface(
-                        color = if (isDark) Color(0xFF202C33) else Color.White,
+                        color = if (isDark) it.diunito.pepper.ui.theme.HeaderDark else Color.White,
                         shadowElevation = if (isDark) 0.dp else 2.dp,
                         modifier = Modifier.fillMaxWidth()
                     ) {
@@ -102,8 +102,9 @@ fun AppScaffold(
                                             // Fixed-width LLM selector button
                                             Box {
                                                 Surface(
-                                                    color = if (isDark) Color(0xFF2A3942) else Color.White,
+                                                    color = if (isDark) it.diunito.pepper.ui.theme.HeaderDark else Color.White,
                                                     shape = androidx.compose.foundation.shape.RoundedCornerShape(20.dp),
+                                                    border = if (isDark) androidx.compose.foundation.BorderStroke(1.5.dp, Color(0xFFE5E7EB)) else null,
                                                     shadowElevation = 1.dp,
                                                     modifier = Modifier
                                                         .width(160.dp)
@@ -138,7 +139,7 @@ fun AppScaffold(
                                                         androidx.compose.material3.Icon(
                                                             imageVector = Icons.Default.ArrowDropDown,
                                                             contentDescription = "Dropdown",
-                                                            tint = if (isDark) Color(0xFF8696A0) else Color(0xFF667781),
+                                                            tint = if (isDark) Color(0xFFE5E7EB) else Color(0xFF667781),
                                                             modifier = Modifier.size(20.dp)
                                                         )
                                                     }
@@ -158,7 +159,7 @@ fun AppScaffold(
                                                         )
                                                     ) {
                                                         Surface(
-                                                            color = if (isDark) Color(0xFF2A3942) else Color.White,
+                                                            color = if (isDark) it.diunito.pepper.ui.theme.HeaderDark else Color.White,
                                                             shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp),
                                                             shadowElevation = 4.dp,
                                                             modifier = Modifier.width(160.dp)
@@ -213,7 +214,7 @@ fun AppScaffold(
                                                     modifier = Modifier
                                                         .size(40.dp)
                                                         .clip(androidx.compose.foundation.shape.CircleShape)
-                                                        .background(if (isDark) Color(0xFF2A3942) else Color(0xFFF0F2F5)),
+                                                        .background(if (isDark) Color(0xFF2B323D) else Color(0xFFF0F2F5)),
                                                     contentAlignment = Alignment.Center
                                                 ) {
                                                     androidx.compose.foundation.Image(

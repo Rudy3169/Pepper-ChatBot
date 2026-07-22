@@ -56,19 +56,19 @@ fun ThemeToggle(
 
     // Track gradient endpoints (now uniform solid color)
     val trackStartColor by animateColorAsState(
-        targetValue = if (isDark) Color(0xFF4B5563) else Color(0xFFE5E7EB),
+        targetValue = if (isDark) Color(0xFF2B323D) else Color(0xFFE5E7EB),
         animationSpec = tween(400),
         label = "trackStart"
     )
     val trackEndColor by animateColorAsState(
-        targetValue = if (isDark) Color(0xFF4B5563) else Color(0xFFE5E7EB),
+        targetValue = if (isDark) Color(0xFF2B323D) else Color(0xFFE5E7EB),
         animationSpec = tween(400),
         label = "trackEnd"
     )
 
     // Thumb color
     val thumbColor by animateColorAsState(
-        targetValue = if (isDark) Color(0xFF2D3A4A) else Color.White,
+        targetValue = if (isDark) Color.Black else Color.White,
         animationSpec = tween(350),
         label = "thumbColor"
     )

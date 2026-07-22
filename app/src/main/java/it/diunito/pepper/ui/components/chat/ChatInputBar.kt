@@ -7,6 +7,7 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -87,6 +88,9 @@ fun ChatInputBar(
             ) {
                 var tfModifier = Modifier.weight(1f)
                 if (focusRequester != null) tfModifier = tfModifier.focusRequester(focusRequester)
+                tfModifier = tfModifier.then(
+                    if (isDark) Modifier.border(1.dp, Color(0xFF141416), RoundedCornerShape(24.dp)) else Modifier
+                )
 
                 TextField(
                     value = value,
@@ -133,8 +137,11 @@ fun ChatInputBar(
                         shape = CircleShape,
                         color = when (state) {
                             "stop" -> Color(0xFFE53935) // Red for stop
-                            "send" -> Color(0xFF008069)
-                            else -> if (isMicEnabled) Color(0xFF008069) else Color(0xFF008069).copy(alpha = 0.3f)
+                            "send" -> if (isDark) it.diunito.pepper.ui.theme.SendButtonDark else it.diunito.pepper.ui.theme.SendButtonLight
+                            else -> {
+                                val baseColor = if (isDark) it.diunito.pepper.ui.theme.SendButtonDark else it.diunito.pepper.ui.theme.SendButtonLight
+                                if (isMicEnabled) baseColor else baseColor.copy(alpha = 0.3f)
+                            }
                         },
                         shadowElevation = when {
                             isDark -> 0.dp

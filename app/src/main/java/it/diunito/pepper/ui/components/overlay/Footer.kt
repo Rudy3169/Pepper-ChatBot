@@ -29,7 +29,7 @@ fun FooterLogos(
     height: Dp = 60.dp
 ) {
     Surface(
-        color = if (isDark) Color(0xFF202C33) else Color(0xFFFFFFFF),
+        color = if (isDark) it.diunito.pepper.ui.theme.HeaderDark else Color(0xFFFFFFFF),
         contentColor = MaterialTheme.colorScheme.onSurface,
         tonalElevation = 2.dp,
         shadowElevation = 2.dp
