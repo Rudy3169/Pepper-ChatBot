@@ -205,8 +205,8 @@ class ChatViewModel : ViewModel() {
                 handleDialogueError(updateUserTyping, updatePepperTyping, msg)
             } catch (e: Exception){
                 Log.e("ERROR", "Error on listen and speech",e)
-                val debugMsg = "Errore di rete o di sistema: ${e.javaClass.simpleName} - ${e.localizedMessage}. Verifica la connessione internet dell'emulatore."
-                handleDialogueError(updateUserTyping, updatePepperTyping, debugMsg)
+                val fallbackMsg = "Al momento non posso ascoltarti o risponderti. Verifica che io sia collegato alla rete corretta."
+                handleDialogueError(updateUserTyping, updatePepperTyping, fallbackMsg)
             } finally {
                 _isProcessing.value = false
                 _dialogueJob = null
