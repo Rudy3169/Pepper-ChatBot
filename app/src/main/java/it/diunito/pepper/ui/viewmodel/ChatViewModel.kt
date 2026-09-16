@@ -7,16 +7,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import it.diunito.pepper.BuildConfig
 import it.diunito.pepper.data.KtorClient
-import it.diunito.pepper.data.requests.AnswerRequest
+import it.diunito.pepper.data.LlmModel
 import it.diunito.pepper.data.requests.LightsRequest
 import it.diunito.pepper.data.requests.SayRequest
-import it.diunito.pepper.data.responses.AnswerResponse
-import it.diunito.pepper.data.responses.ListenResponse
 import it.diunito.pepper.data.services.GatewayApiService
 import it.diunito.pepper.data.services.HeadApiService
+import it.diunito.pepper.data.services.LlmApiService
+import it.diunito.pepper.data.services.LlmHttpException
+import io.ktor.client.plugins.HttpRequestTimeoutException
 import it.diunito.pepper.ui.components.chat.ChatMessage
 import it.diunito.pepper.ui.components.chat.Sender
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,9 +39,29 @@ class ChatViewModel : ViewModel() {
         BuildConfig.HEAD_API_HOST
     )
 
+    private val llmApi = LlmApiService(
+        KtorClient.client,
+        BuildConfig.LLM_API_ENDPOINT,
+        BuildConfig.LLM_API_KEY
+    )
+
     private val _chat = MutableLiveData<List<ChatMessage>>(emptyList())
     val chat: LiveData<List<ChatMessage>> = _chat
     private var _conversationId = UUID.randomUUID().toString()
+
+    // LLM model selection
+    private val _selectedModel = MutableStateFlow(LlmModel.GPT_OSS)
+    val selectedModel: StateFlow<LlmModel> = _selectedModel.asStateFlow()
+
+    fun selectModel(model: LlmModel) {
+        if (model == _selectedModel.value) return
+        _selectedModel.value = model
+        // Reset conversation context when switching models
+        llmApi.resetConversation()
+        _chat.value = emptyList()
+        _conversationId = UUID.randomUUID().toString()
+        Log.d("ChatViewModel", "Switched to model: ${model.displayName}")
+    }
 
     // Track the active dialogue coroutine so it can be cancelled
     private var _dialogueJob: Job? = null
@@ -52,6 +74,7 @@ class ChatViewModel : ViewModel() {
         // TODO: stop conversation when pressed.
         _chat.value = emptyList()
         _conversationId = UUID.randomUUID().toString()
+        llmApi.resetConversation()
         updateUserTyping(false)
         updatePepperTyping(false)
         viewModelScope.launch {
@@ -100,7 +123,7 @@ class ChatViewModel : ViewModel() {
                             groups = arrayListOf("EarLeds")
                         )
                     )
-                    val messageText: ListenResponse = gatewayApi.getListen()
+                    val messageText = gatewayApi.getListen()
 
                     // print chat message
                     val userMessage = ChatMessage(
@@ -135,13 +158,14 @@ class ChatViewModel : ViewModel() {
 
                 updateUserTyping(false)
                 updatePepperTyping(true)
-                val answerText : AnswerResponse = gatewayApi.postAnswer(
-                    AnswerRequest(message, _conversationId)
-                )
+
+                // Call the LLM endpoint directly to get the response
+                val answerText = llmApi.chat(message, _selectedModel.value.modelId)
+
                 val pepperMessage = ChatMessage(
                     id = _chat.value?.size ?: 0,
                     sender = Sender.PEPPER,
-                    text = answerText.output
+                    text = answerText
                 )
                 _chat.value = _chat.value.orEmpty() + pepperMessage
                 updatePepperTyping(false)
@@ -154,7 +178,7 @@ class ChatViewModel : ViewModel() {
                 )
                 headApi.postSay(
                     SayRequest(
-                        message = answerText.output
+                        message = answerText
                     )
                 )
                 headApi.postLights(
@@ -165,22 +189,43 @@ class ChatViewModel : ViewModel() {
                 )
             } catch (e: CancellationException) {
                 throw e
+            } catch (e: TimeoutCancellationException) {
+                Log.e("ERROR", "Timeout", e)
+                handleDialogueError(updateUserTyping, updatePepperTyping, "Ci sto mettendo troppo tempo a pensare a causa del server sovraccarico. Riproviamo?")
+            } catch (e: HttpRequestTimeoutException) {
+                Log.e("ERROR", "HTTP Timeout", e)
+                handleDialogueError(updateUserTyping, updatePepperTyping, "Ci sto mettendo troppo tempo a pensare a causa del server sovraccarico. Riproviamo?")
+            } catch (e: LlmHttpException) {
+                Log.e("ERROR", "LLM HTTP Error: ${e.statusCode}", e)
+                val msg = if (e.statusCode == 403) {
+                    "Il server AI ha restituito un errore di permessi o non trova il modello (Errore 403)."
+                } else {
+                    "Il server AI ha restituito un errore (HTTP ${e.statusCode})."
+                }
+                handleDialogueError(updateUserTyping, updatePepperTyping, msg)
             } catch (e: Exception){
                 Log.e("ERROR", "Error on listen and speech",e)
-                updateUserTyping(false)
-                updatePepperTyping(false)
-
-                // Show a friendly message from Pepper explaining the issue
-                val pepperErrorMessage = ChatMessage(
-                    id = _chat.value?.size ?: 0,
-                    sender = Sender.PEPPER,
-                    text = errorMessage
-                )
-                _chat.value = _chat.value.orEmpty() + pepperErrorMessage
+                val debugMsg = "Errore di rete o di sistema: ${e.javaClass.simpleName} - ${e.localizedMessage}. Verifica la connessione internet dell'emulatore."
+                handleDialogueError(updateUserTyping, updatePepperTyping, debugMsg)
             } finally {
                 _isProcessing.value = false
                 _dialogueJob = null
             }
         }
+    }
+
+    private fun handleDialogueError(
+        updateUserTyping: (typing: Boolean) -> Unit,
+        updatePepperTyping: (typing: Boolean) -> Unit,
+        message: String
+    ) {
+        updateUserTyping(false)
+        updatePepperTyping(false)
+        val pepperErrorMessage = ChatMessage(
+            id = _chat.value?.size ?: 0,
+            sender = Sender.PEPPER,
+            text = message
+        )
+        _chat.value = _chat.value.orEmpty() + pepperErrorMessage
     }
 }

@@ -1,11 +1,22 @@
 import org.gradle.kotlin.dsl.debugImplementation
 import org.gradle.kotlin.dsl.implementation
+import java.util.Properties
+import java.io.FileInputStream
 
 plugins {
     alias(libs.plugins.android.application)
     id("org.jetbrains.kotlin.plugin.compose")
     kotlin("plugin.serialization")
 }
+
+// LLM API configuration from local.properties
+val localProps = Properties()
+val localPropsFile = rootProject.file("local.properties")
+if (localPropsFile.exists()) {
+    localProps.load(FileInputStream(localPropsFile))
+}
+val llmApiKey: String = localProps.getProperty("llm.api.key", "")
+val llmApiEndpoint: String = localProps.getProperty("llm.api.endpoint", "")
 
 android {
     namespace = "it.diunito.pepper"
@@ -14,6 +25,8 @@ android {
     defaultConfig {
         buildConfigField("String", "GATEWAY_API_HOST", "\"http://172.20.10.13:9003\"")
         buildConfigField("String", "HEAD_API_HOST", "\"http://172.20.10.3:8000\"")
+        buildConfigField("String", "LLM_API_KEY", "\"$llmApiKey\"")
+        buildConfigField("String", "LLM_API_ENDPOINT", "\"$llmApiEndpoint\"")
         applicationId = "it.diunito.pepper"
         minSdk = 23
         targetSdk = 33

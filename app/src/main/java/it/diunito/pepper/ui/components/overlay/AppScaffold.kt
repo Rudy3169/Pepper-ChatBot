@@ -1,5 +1,6 @@
 package it.diunito.pepper.ui.components.overlay
 
+import it.diunito.pepper.data.LlmModel
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -51,6 +52,8 @@ fun AppScaffold(
     isDark: Boolean,
     isChatScreen: Boolean = false,
     languageHandler: LanguageHandler,
+    selectedModel: LlmModel = LlmModel.GPT_OSS,
+    onModelSelected: (LlmModel) -> Unit = {},
     onToggleTheme: () -> Unit,
     onResetToSystem: (() -> Unit)? = null,
     onAirlabClick: () -> Unit,
@@ -94,9 +97,6 @@ fun AppScaffold(
                                             modifier = Modifier.fillMaxWidth()
                                         ) {
                                             var expanded by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf(false) }
-                                            var selectedAI by androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf("Gemini") }
-
-                                            val allAIs = listOf("Gemini", "ChatGPT", "Claude", "DeepSeek")
                                             var buttonHeightPx by androidx.compose.runtime.remember { androidx.compose.runtime.mutableIntStateOf(0) }
 
                                             // Fixed-width LLM selector button
@@ -118,19 +118,14 @@ fun AppScaffold(
                                                     ) {
                                                         androidx.compose.foundation.Image(
                                                             painter = androidx.compose.ui.res.painterResource(
-                                                                id = when(selectedAI) {
-                                                                    "ChatGPT" -> if (isDark) it.diunito.pepper.R.drawable.ic_chatgpt_white else it.diunito.pepper.R.drawable.ic_chatgpt_black
-                                                                    "Claude" -> it.diunito.pepper.R.drawable.ic_claude
-                                                                    "DeepSeek" -> it.diunito.pepper.R.drawable.ic_deepseek
-                                                                    else -> it.diunito.pepper.R.drawable.ic_gemini
-                                                                }
+                                                                id = if (isDark) selectedModel.iconResDark else selectedModel.iconResLight
                                                             ),
-                                                            contentDescription = selectedAI,
+                                                            contentDescription = selectedModel.displayName,
                                                             modifier = Modifier.size(20.dp)
                                                         )
                                                         androidx.compose.foundation.layout.Spacer(modifier = Modifier.width(8.dp))
                                                         androidx.compose.material3.Text(
-                                                            text = selectedAI,
+                                                            text = selectedModel.displayName,
                                                             style = androidx.compose.material3.MaterialTheme.typography.bodyMedium.copy(
                                                                 fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold,
                                                                 color = if (isDark) Color.White else Color.Black
@@ -146,8 +141,7 @@ fun AppScaffold(
                                                     }
                                                 }
 
-                                                // Custom pill-shaped dropdown
-                                                // Shows only NON-selected LLMs, rendered in a Popup
+                                                // Dropdown showing non-selected models
                                                 if (expanded) {
                                                     val density = androidx.compose.ui.platform.LocalDensity.current
                                                     val offsetPx = with(density) { (buttonHeightPx + 4.dp.roundToPx()) }
@@ -168,12 +162,12 @@ fun AppScaffold(
                                                             Column(
                                                                 modifier = Modifier.padding(vertical = 8.dp)
                                                             ) {
-                                                                allAIs.filter { it != selectedAI }.forEach { aiName ->
+                                                                LlmModel.entries.filter { it != selectedModel }.forEach { model ->
                                                                     Row(
                                                                         modifier = Modifier
                                                                             .fillMaxWidth()
                                                                             .clickable {
-                                                                                selectedAI = aiName
+                                                                                onModelSelected(model)
                                                                                 expanded = false
                                                                             }
                                                                             .padding(horizontal = 14.dp, vertical = 10.dp),
@@ -181,19 +175,14 @@ fun AppScaffold(
                                                                     ) {
                                                                         androidx.compose.foundation.Image(
                                                                             painter = androidx.compose.ui.res.painterResource(
-                                                                                id = when(aiName) {
-                                                                                    "ChatGPT" -> if (isDark) it.diunito.pepper.R.drawable.ic_chatgpt_white else it.diunito.pepper.R.drawable.ic_chatgpt_black
-                                                                                    "Claude" -> it.diunito.pepper.R.drawable.ic_claude
-                                                                                    "DeepSeek" -> it.diunito.pepper.R.drawable.ic_deepseek
-                                                                                    else -> it.diunito.pepper.R.drawable.ic_gemini
-                                                                                }
+                                                                                id = if (isDark) model.iconResDark else model.iconResLight
                                                                             ),
-                                                                            contentDescription = aiName,
+                                                                            contentDescription = model.displayName,
                                                                             modifier = Modifier.size(20.dp)
                                                                         )
                                                                         androidx.compose.foundation.layout.Spacer(modifier = Modifier.width(10.dp))
                                                                         androidx.compose.material3.Text(
-                                                                            text = aiName,
+                                                                            text = model.displayName,
                                                                             style = androidx.compose.material3.MaterialTheme.typography.bodyMedium.copy(
                                                                                 fontWeight = androidx.compose.ui.text.font.FontWeight.Medium,
                                                                                 color = if (isDark) Color.White else Color.Black

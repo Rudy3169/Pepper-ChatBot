@@ -7,12 +7,14 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import it.diunito.pepper.ui.components.overlay.AppScaffold
 import it.diunito.pepper.ui.components.overlay.LocalPepperTyping
 import it.diunito.pepper.ui.navigation.AppNavGraph
@@ -21,6 +23,7 @@ import it.diunito.pepper.ui.scripts.LanguageHandler
 import it.diunito.pepper.ui.scripts.LocalLanguageHandler
 import it.diunito.pepper.ui.scripts.loadLanguages
 import it.diunito.pepper.ui.theme.ClientTheme
+import it.diunito.pepper.ui.viewmodel.ChatViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 
 class MainActivity : ComponentActivity() {
@@ -52,6 +55,10 @@ class MainActivity : ComponentActivity() {
             val currentRoute = navBackStackEntry?.destination?.route
             val isChatScreen = currentRoute == it.diunito.pepper.ui.navigation.Screen.Chat.route
 
+            // Shared ChatViewModel for model selection
+            val chatViewModel: ChatViewModel = viewModel()
+            val selectedModel by chatViewModel.selectedModel.collectAsState()
+
             ClientTheme(forceDark = forceDark) {
                 val pepperTypingState = remember { mutableStateOf(false) }
                 CompositionLocalProvider(
@@ -61,6 +68,8 @@ class MainActivity : ComponentActivity() {
                     AppScaffold(
                         isDark = effectiveDark,
                         isChatScreen = isChatScreen,
+                        selectedModel = selectedModel,
+                        onModelSelected = { chatViewModel.selectModel(it) },
                         onToggleTheme = {
                             forceDark = !effectiveDark
                         },
