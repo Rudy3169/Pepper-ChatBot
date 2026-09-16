@@ -58,6 +58,11 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
+import android.content.Intent
+import android.speech.RecognizerIntent
+import android.app.Activity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -99,6 +104,23 @@ fun EngageScreen(
     // input bar
     var input by rememberSaveable { mutableStateOf("") }
     val inputFocus = remember { FocusRequester() }
+
+    // Speech recognizer launcher for local fallback
+    val speechRecognizerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val spokenText = result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.firstOrNull()
+            if (!spokenText.isNullOrBlank()) {
+                viewModel.dialogueTurn(
+                    updateUserTyping = { isUserTyping = it },
+                    updatePepperTyping = { isPepperTyping = it },
+                    content = spokenText,
+                    errorMessage = labels.pepperConnectionError
+                )
+            }
+        }
+    }
 
     // Pepper status text (dynamic based on state)
     val pepperStatus = when {
@@ -196,6 +218,16 @@ fun EngageScreen(
                                 updateUserTyping = { isUserTyping = it },
                                 updatePepperTyping = { isPepperTyping = it },
                                 errorMessage = labels.pepperConnectionError,
+                                onLocalMicFallback = {
+                                    val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+                                        putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+                                    }
+                                    try {
+                                        speechRecognizerLauncher.launch(intent)
+                                    } catch (e: Exception) {
+                                        // Ignora se il dispositivo non ha app vocali installate
+                                    }
+                                }
                             )
                         },
                         isMicEnabled = !isUserTyping && !isPepperTyping,

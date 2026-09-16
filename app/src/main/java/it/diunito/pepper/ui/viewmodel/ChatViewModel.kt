@@ -106,7 +106,8 @@ class ChatViewModel : ViewModel() {
         updateUserTyping: (typing: Boolean) -> Unit,
         updatePepperTyping: (typing: Boolean) -> Unit,
         content: String? = null,
-        errorMessage: String = "Scusa, in questo momento non riesco a pensare bene. Possiamo riprovare tra poco?"
+        errorMessage: String = "Scusa, in questo momento non riesco a pensare bene. Possiamo riprovare tra poco?",
+        onLocalMicFallback: (() -> Unit)? = null
     ){
         _dialogueJob?.cancel()
         _isProcessing.value = true
@@ -123,7 +124,21 @@ class ChatViewModel : ViewModel() {
                             groups = arrayListOf("EarLeds")
                         )
                     )
-                    val messageText = gatewayApi.getListen()
+                    val messageText = try {
+                        gatewayApi.getListen()
+                    } catch (e: Exception) {
+                        Log.e("ERROR", "Gateway API listen failed, triggering local mic fallback", e)
+                        // Spegni le luci delle orecchie se fallisce
+                        try {
+                            headApi.postLights(LightsRequest(setLights = false, groups = arrayListOf("EarLeds")))
+                        } catch (e2: Exception) {
+                            /* ignore */
+                        }
+                        updateUserTyping(false)
+                        _isProcessing.value = false
+                        onLocalMicFallback?.invoke()
+                        return@launch
+                    }
 
                     // print chat message
                     val userMessage = ChatMessage(
