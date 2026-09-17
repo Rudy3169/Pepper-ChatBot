@@ -23,8 +23,8 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        buildConfigField("String", "GATEWAY_API_HOST", "\"http://172.20.10.13:9003\"")
-        buildConfigField("String", "HEAD_API_HOST", "\"http://172.20.10.3:8000\"")
+        buildConfigField("String", "GATEWAY_API_HOST", "\"http://172.20.10.2:9003\"")
+        buildConfigField("String", "HEAD_API_HOST", "\"http://172.20.10.4:8000\"")
         buildConfigField("String", "LLM_API_KEY", "\"$llmApiKey\"")
         buildConfigField("String", "LLM_API_ENDPOINT", "\"$llmApiEndpoint\"")
         applicationId = "it.diunito.pepper"

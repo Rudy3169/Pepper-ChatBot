@@ -16,7 +16,8 @@
     "suggestion4": "Cosa sai fare?",
     "suggestionsTitle": "Prova a chiedermi:",
     "headerTyping": "Sta scrivendo...",
-    "pepperConnectionError": "Scusa, in questo momento non riesco a risponderti. Possiamo riprovare tra poco?"
+    "connectionError": "Scusa, aspetta un attimo, il server potrebbe essere sovraccarico o spento. Possiamo riprovare tra poco?",
+    "pepperConnectionError": "Al momento non posso ascoltarti o rispondere. Verifica che io sia collegata alla rete corretta."
   },
   "en": {
     "chatTitle": "Our conversation",
@@ -35,6 +36,7 @@
     "suggestion4": "What can you do?",
     "suggestionsTitle": "Try asking me:",
     "headerTyping": "Typing...",
-    "pepperConnectionError": "Sorry, I can't answer you right now. Can we try again in a little bit?"
+    "connectionError": "Sorry, wait a minute, the server might be overloaded or turned off. Can we try again in a bit?",
+    "pepperConnectionError": "I can't listen or answer right now. Please check that I am connected to the correct network."
   }
 }

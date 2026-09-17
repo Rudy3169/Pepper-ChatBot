@@ -220,8 +220,7 @@ class ChatViewModel : ViewModel() {
                 handleDialogueError(updateUserTyping, updatePepperTyping, msg)
             } catch (e: Exception){
                 Log.e("ERROR", "Error on listen and speech",e)
-                val fallbackMsg = "Al momento non posso ascoltarti o risponderti. Verifica che io sia collegato alla rete corretta."
-                handleDialogueError(updateUserTyping, updatePepperTyping, fallbackMsg)
+                handleDialogueError(updateUserTyping, updatePepperTyping, errorMessage)
             } finally {
                 _isProcessing.value = false
                 _dialogueJob = null
@@ -236,6 +235,19 @@ class ChatViewModel : ViewModel() {
     ) {
         updateUserTyping(false)
         updatePepperTyping(false)
+        val pepperErrorMessage = ChatMessage(
+            id = _chat.value?.size ?: 0,
+            sender = Sender.PEPPER,
+            text = message
+        )
+        _chat.value = _chat.value.orEmpty() + pepperErrorMessage
+    }
+
+    /**
+     * Show an error message in the chat from the UI layer
+     * (e.g. when both Pepper mic and local speech recognition fail).
+     */
+    fun showError(message: String) {
         val pepperErrorMessage = ChatMessage(
             id = _chat.value?.size ?: 0,
             sender = Sender.PEPPER,

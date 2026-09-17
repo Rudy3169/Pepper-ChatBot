@@ -119,6 +119,9 @@ fun EngageScreen(
                     errorMessage = labels.pepperConnectionError
                 )
             }
+        } else {
+            // Google speech recognition failed or was cancelled
+            viewModel.showError(labels.pepperConnectionError)
         }
     }
 
@@ -225,7 +228,8 @@ fun EngageScreen(
                                     try {
                                         speechRecognizerLauncher.launch(intent)
                                     } catch (e: Exception) {
-                                        // Ignora se il dispositivo non ha app vocali installate
+                                        // Google speech recognition not available on this device
+                                        viewModel.showError(labels.pepperConnectionError)
                                     }
                                 }
                             )

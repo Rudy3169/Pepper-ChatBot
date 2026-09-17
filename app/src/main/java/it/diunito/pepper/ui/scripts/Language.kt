@@ -26,6 +26,7 @@ data class TextLabel(
     val suggestion4: String,
     val suggestionsTitle: String,
     val headerTyping: String,
+    val connectionError: String,
     val pepperConnectionError: String
 )
 
@@ -47,7 +48,8 @@ fun loadLanguages(context: Context): Language {
         .bufferedReader(Charset.defaultCharset())
         .use { it.readText() }
 
-    return Json.decodeFromString(Language.serializer(), jsonString)
+    val json = Json { ignoreUnknownKeys = true }
+    return json.decodeFromString(Language.serializer(), jsonString)
 }
 
 class LanguageHandler(
