@@ -5,13 +5,13 @@ Benvenuti nel progetto **Pepper ChatBot**, un'applicazione Android avanzata svil
 
 ## Panoramica
 
-Questo progetto è stato sviluppato nell'ambito di un tirocinio presso l'Università degli Studi di Torino (UNITO).
+Questo progetto è stato sviluppato nell'ambito di un tirocinio presso **AIRLab** (Artificial Intelligence and Robotics Lab) del **Dipartimento di Informatica** dell'**Università degli Studi di Torino (UNITO)**.
 <br>L'obiettivo principale è fornire a Pepper un'interfaccia di dialogo moderna e reattiva, permettendogli di interagire con gli utenti tramite voce e interfaccia touch, supportato da un'intelligenza artificiale remota.
 
 ## Funzionalità Principali
 
-- **Dialogo Intelligente**: Integrazione con un gateway LLM esterno per risposte contestuali, naturali e fluide.
-- **Selezione LLM Dinamica**: Possibilità di scegliere rapidamente tramite interfaccia quale modello utilizzare (Gemini, ChatGPT, Claude, DeepSeek).
+- **Dialogo Intelligente**: Integrazione diretta con le API di Ollama per risposte contestuali, naturali e fluide, con gestione avanzata degli errori per fornire messaggi di scuse "human-friendly".
+- **Selezione LLM Dinamica**: Possibilità di scegliere dinamicamente tramite interfaccia quale modello utilizzare (ChatGPT o DeepSeek).
 - **Temi e Personalizzazione**: Supporto nativo per Light Mode e Dark Mode, con interfacce adattive.
 - **Multimodalità**: Supporto completo per input vocale (Speech-to-Text) e testuale tramite un'interfaccia chat ottimizzata per il tablet del robot.
 - **Feedback Robotico**: Gestione dinamica dei feedback del robot (LED oculari e del petto, sintesi vocale) per segnalare le fasi di ascolto e di elaborazione.
@@ -43,7 +43,7 @@ Il design dell'interfaccia è stato progettato per essere intuitivo e accessibil
 - **Linguaggio**: Kotlin
 - **UI Framework**: Jetpack Compose
 - **Architettura**: MVVM (Model-View-ViewModel)
-- **Networking**: Ktor Client (per la comunicazione con l'LLM Gateway e i servizi di controllo del robot)
+- **Networking**: Ktor Client (per la comunicazione diretta con le API LLM e i servizi di controllo del robot)
 - **Robot SDK**: Aldebaran QiSDK
 - **Gestione Stato**: LiveData e Coroutine per una gestione asincrona delle risposte.
 
@@ -65,17 +65,19 @@ app/src/main/java/it/diunito/pepper/
 ### Prerequisiti
 - **Android Studio** (versione Koala o successiva).
 - **Pepper Robot** reale con QiSDK o emulatore Pepper configurato correttamente.
-- Accesso a un **Gateway API** attivo per l'elaborazione del linguaggio naturale.
+- Accesso a un endpoint **API Ollama/LLM** attivo per l'elaborazione del linguaggio naturale.
 
 ### Variabili di Ambiente
 L'applicazione utilizza `BuildConfig` per la configurazione degli endpoint. Assicurati di definire i seguenti parametri nel tuo file `local.properties`:
 
-- `GATEWAY_API_HOST`: L'indirizzo del server LLM (es. `http://192.168.x.x:5000`).
+- `llm.api.endpoint`: L'indirizzo dell'endpoint API LLM.
+- `llm.api.key`: La chiave API per l'autenticazione all'endpoint.
+- `GATEWAY_API_HOST`: L'indirizzo del server (se ancora in uso).
 - `HEAD_API_HOST`: L'indirizzo per il controllo diretto delle funzionalità hardware (se applicabile).
 
 ## 👥 Contributi
 
-Sviluppato presso il Dipartimento di Informatica dell'Università di Torino.
+Sviluppato presso **AIRLab** (Artificial Intelligence and Robotics Lab) del **Dipartimento di Informatica** dell'**Università degli Studi di Torino**.
 
 ---
 *Progetto realizzato per scopi accademici e di ricerca.*
