@@ -69,6 +69,17 @@ class ChatViewModel : ViewModel() {
     // Exposed to the UI: true while a dialogue turn is in progress
     private val _isProcessing = MutableStateFlow(false)
     val isProcessing: StateFlow<Boolean> = _isProcessing.asStateFlow()
+
+    // Tracks whether Pepper's mic (via Gateway API) is available.
+    // After the first failure, this is set to false so subsequent
+    // mic presses skip the Gateway timeout and go straight to local fallback.
+    // Resets automatically when the app is restarted (ViewModel lifecycle).
+    private val _pepperMicAvailable = MutableStateFlow(true)
+    val pepperMicAvailable: StateFlow<Boolean> = _pepperMicAvailable.asStateFlow()
+
+    // Tracks whether Pepper's Head API (lights and speech) is available.
+    // If it fails once, it's set to false to avoid future UI blocking timeouts.
+    private val _pepperHeadAvailable = MutableStateFlow(true)
     fun flush(updateUserTyping: (typing: Boolean) -> Unit,
               updatePepperTyping: (typing: Boolean) -> Unit,){
         // TODO: stop conversation when pressed.
@@ -115,6 +126,14 @@ class ChatViewModel : ViewModel() {
             try {
                 var message: String = content ?: ""
                 if(content == null) { // the user chose to speak
+                    // If Pepper's mic already failed once, skip straight to local fallback
+                    if (!_pepperMicAvailable.value) {
+                        Log.d("ChatViewModel", "Pepper mic unavailable, skipping to local fallback")
+                        _isProcessing.value = false
+                        onLocalMicFallback?.invoke()
+                        return@launch
+                    }
+
                     // LISTENING PHASE
                     updateUserTyping(true)
 
@@ -128,11 +147,12 @@ class ChatViewModel : ViewModel() {
                         gatewayApi.getListen()
                     } catch (e: Exception) {
                         Log.e("ERROR", "Gateway API listen failed, triggering local mic fallback", e)
-                        // Spegni le luci delle orecchie se fallisce
+                        _pepperMicAvailable.value = false
+                        // Turn off ear LEDs if listening fails
                         try {
                             headApi.postLights(LightsRequest(setLights = false, groups = arrayListOf("EarLeds")))
                         } catch (e2: Exception) {
-                            /* ignore */
+                            // Ignore exceptions during cleanup
                         }
                         updateUserTyping(false)
                         _isProcessing.value = false
@@ -185,23 +205,34 @@ class ChatViewModel : ViewModel() {
                 _chat.value = _chat.value.orEmpty() + pepperMessage
                 updatePepperTyping(false)
 
-                headApi.postLights(
-                    LightsRequest(
-                        setLights = true,
-                        groups = arrayListOf("ChestLeds")
+                if (_pepperHeadAvailable.value) {
+                    val lightResult = headApi.postLights(
+                        LightsRequest(
+                            setLights = true,
+                            groups = arrayListOf("ChestLeds")
+                        )
                     )
-                )
-                headApi.postSay(
-                    SayRequest(
-                        message = answerText
-                    )
-                )
-                headApi.postLights(
-                    LightsRequest(
-                        setLights = false,
-                        groups = arrayListOf("ChestLeds")
-                    )
-                )
+
+                    if (lightResult.result >= 10000) {
+                        Log.e("ChatViewModel", "Head API unreachable (code ${lightResult.result}), skipping future calls")
+                        _pepperHeadAvailable.value = false
+                        // TODO: Implement native Android TTS fallback here
+                    } else {
+                        headApi.postSay(
+                            SayRequest(
+                                message = answerText
+                            )
+                        )
+                        headApi.postLights(
+                            LightsRequest(
+                                setLights = false,
+                                groups = arrayListOf("ChestLeds")
+                            )
+                        )
+                    }
+                } else {
+                    // TODO: Implement native Android TTS fallback here
+                }
             } catch (e: CancellationException) {
                 throw e
             } catch (e: TimeoutCancellationException) {
