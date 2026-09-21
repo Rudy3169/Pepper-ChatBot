@@ -58,11 +58,14 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.speech.RecognizerIntent
 import android.app.Activity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -105,7 +108,9 @@ fun EngageScreen(
     var input by rememberSaveable { mutableStateOf("") }
     val inputFocus = remember { FocusRequester() }
 
-    // Speech recognizer launcher for local fallback
+    // ── Local mic fallback: speech recognizer + runtime permission ──
+    val context = LocalContext.current
+
     val speechRecognizerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -121,6 +126,30 @@ fun EngageScreen(
             }
         } else {
             // Google speech recognition failed or was cancelled
+            viewModel.showError(labels.pepperConnectionError)
+        }
+    }
+
+    // Helper: launch the speech recognizer intent
+    val launchSpeechRecognizer: () -> Unit = {
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
+            putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+        }
+        try {
+            speechRecognizerLauncher.launch(intent)
+        } catch (e: Exception) {
+            // No app available to handle speech recognition on this device
+            viewModel.showError(labels.pepperConnectionError)
+        }
+    }
+
+    // Permission launcher: requests RECORD_AUDIO, then launches speech recognizer if granted
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            launchSpeechRecognizer()
+        } else {
             viewModel.showError(labels.pepperConnectionError)
         }
     }
@@ -222,14 +251,16 @@ fun EngageScreen(
                                 updatePepperTyping = { isPepperTyping = it },
                                 errorMessage = labels.pepperConnectionError,
                                 onLocalMicFallback = {
-                                    val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-                                        putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
-                                    }
-                                    try {
-                                        speechRecognizerLauncher.launch(intent)
-                                    } catch (e: Exception) {
-                                        // Google speech recognition not available on this device
-                                        viewModel.showError(labels.pepperConnectionError)
+                                    // Check RECORD_AUDIO permission before launching speech recognizer
+                                    val hasPermission = ContextCompat.checkSelfPermission(
+                                        context,
+                                        Manifest.permission.RECORD_AUDIO
+                                    ) == PackageManager.PERMISSION_GRANTED
+
+                                    if (hasPermission) {
+                                        launchSpeechRecognizer()
+                                    } else {
+                                        permissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
                                     }
                                 }
                             )
