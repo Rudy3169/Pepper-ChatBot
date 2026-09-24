@@ -48,15 +48,15 @@ fun FooterLogos(
             ) {
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth(0.8f)
+                        .fillMaxWidth(0.78f)
                         .fillMaxHeight()
                         .padding(vertical = 2.dp),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Logo(ClientPictures.dipinfo(isDark), "Logo DipInfo", onDipInfoClick)
                     Logo(ClientPictures.airlab(isDark), "Logo AIRLab", onAirlabClick)
                     Logo(ClientPictures.unito(isDark), "Logo UniTo", onUnitoClick)
+                    Logo(ClientPictures.dipinfo(isDark), "Logo DipInfo", onDipInfoClick)
                 }
             }
         }
