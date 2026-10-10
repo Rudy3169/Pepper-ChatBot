@@ -82,7 +82,10 @@ class ChatViewModel : ViewModel() {
     private val _pepperHeadAvailable = MutableStateFlow(true)
     fun flush(updateUserTyping: (typing: Boolean) -> Unit,
               updatePepperTyping: (typing: Boolean) -> Unit,){
-        // TODO: stop conversation when pressed.
+        _dialogueJob?.cancel()
+        _dialogueJob = null
+        _isProcessing.value = false
+        
         _chat.value = emptyList()
         _conversationId = UUID.randomUUID().toString()
         llmApi.resetConversation()
@@ -216,7 +219,6 @@ class ChatViewModel : ViewModel() {
                     if (lightResult.result >= 10000) {
                         Log.e("ChatViewModel", "Head API unreachable (code ${lightResult.result}), skipping future calls")
                         _pepperHeadAvailable.value = false
-                        // TODO: Implement native Android TTS fallback here
                     } else {
                         headApi.postSay(
                             SayRequest(
@@ -230,8 +232,6 @@ class ChatViewModel : ViewModel() {
                             )
                         )
                     }
-                } else {
-                    // TODO: Implement native Android TTS fallback here
                 }
             } catch (e: CancellationException) {
                 throw e
