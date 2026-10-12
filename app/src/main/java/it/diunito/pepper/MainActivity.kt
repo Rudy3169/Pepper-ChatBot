@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import it.diunito.pepper.ui.components.overlay.AppScaffold
 import it.diunito.pepper.ui.components.overlay.LocalPepperTyping
+import it.diunito.pepper.ui.components.overlay.LocalUserTyping
 import it.diunito.pepper.ui.navigation.AppNavGraph
 import it.diunito.pepper.ui.scripts.AppLanguage
 import it.diunito.pepper.ui.scripts.LanguageHandler
@@ -61,9 +62,11 @@ class MainActivity : ComponentActivity() {
 
             ClientTheme(forceDark = forceDark) {
                 val pepperTypingState = remember { mutableStateOf(false) }
+                val userTypingState = remember { mutableStateOf(false) }
                 CompositionLocalProvider(
                     LocalLanguageHandler provides languageHandler,
-                    LocalPepperTyping provides pepperTypingState
+                    LocalPepperTyping provides pepperTypingState,
+                    LocalUserTyping provides userTypingState
                 ) {
                     AppScaffold(
                         isDark = effectiveDark,

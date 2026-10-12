@@ -38,7 +38,7 @@ fun TypingRow(
                 side = BubbleSide.RIGHT,
                 containerColor = containerColor,
                 maxWidth = maxBubbleWidth
-            ) { TypingDots(color = contentColor) }
+            ) { ListeningMicIndicator(color = contentColor) }
             Spacer(Modifier.width(8.dp))
             UserAvatar()
         }

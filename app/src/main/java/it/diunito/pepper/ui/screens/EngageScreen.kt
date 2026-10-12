@@ -80,6 +80,7 @@ import it.diunito.pepper.ui.components.chat.ChatInputBar
 import it.diunito.pepper.ui.components.chat.ChatMessage
 import it.diunito.pepper.ui.components.overlay.LocalIsDark
 import it.diunito.pepper.ui.components.overlay.LocalPepperTyping
+import it.diunito.pepper.ui.components.overlay.LocalUserTyping
 import androidx.compose.runtime.CompositionLocalProvider
 import it.diunito.pepper.ui.theme.AIRblue
 import it.diunito.pepper.ui.theme.OnlineGreen
@@ -98,7 +99,7 @@ fun EngageScreen(
     val isProcessing by viewModel.isProcessing.collectAsState()
     val isDark = LocalIsDark.current
 
-    var isUserTyping: Boolean by remember { mutableStateOf(false) }
+    var isUserTyping: Boolean by LocalUserTyping.current
     var isPepperTyping: Boolean by LocalPepperTyping.current
 
     // load available languages
@@ -114,6 +115,7 @@ fun EngageScreen(
     val speechRecognizerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
+        isUserTyping = false
         if (result.resultCode == Activity.RESULT_OK) {
             val spokenText = result.data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.firstOrNull()
             if (!spokenText.isNullOrBlank()) {
@@ -134,10 +136,13 @@ fun EngageScreen(
     val launchSpeechRecognizer: () -> Unit = {
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
             putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            putExtra(RecognizerIntent.EXTRA_PROMPT, labels.pepperListening)
         }
         try {
+            isUserTyping = true
             speechRecognizerLauncher.launch(intent)
         } catch (e: Exception) {
+            isUserTyping = false
             // No app available to handle speech recognition on this device
             viewModel.showError(labels.pepperConnectionError)
         }
@@ -150,6 +155,7 @@ fun EngageScreen(
         if (isGranted) {
             launchSpeechRecognizer()
         } else {
+            isUserTyping = false
             viewModel.showError(labels.pepperConnectionError)
         }
     }

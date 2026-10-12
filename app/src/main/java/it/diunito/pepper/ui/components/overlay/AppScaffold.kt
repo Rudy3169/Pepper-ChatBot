@@ -46,6 +46,9 @@ val LocalIsDark = compositionLocalOf { false }
 val LocalPepperTyping = compositionLocalOf<androidx.compose.runtime.MutableState<Boolean>> {
     error("No LocalPepperTyping provided")
 }
+val LocalUserTyping = compositionLocalOf<androidx.compose.runtime.MutableState<Boolean>> {
+    error("No LocalUserTyping provided")
+}
 
 @Composable
 fun AppScaffold(
@@ -228,8 +231,13 @@ fun AppScaffold(
                                                         modifier = Modifier.padding(top = 2.dp)
                                                     ) {
                                                         val pepperTyping = LocalPepperTyping.current.value
+                                                        val userTyping = LocalUserTyping.current.value
                                                         val headerLabels = LocalLanguageHandler.current.labels.collectAsState().value
-                                                        val statusText = if (pepperTyping) headerLabels.headerTyping else "Online"
+                                                        val statusText = when {
+                                                            userTyping -> headerLabels.pepperListening
+                                                            pepperTyping -> headerLabels.headerTyping
+                                                            else -> "Online"
+                                                        }
                                                         val statusColor = if (isDark) Color(0xFF8696A0) else Color(0xFF667781)
                                                         androidx.compose.material3.Text(
                                                             text = statusText,
