@@ -16,7 +16,8 @@ import javax.net.ssl.X509TrustManager
 object KtorClient {
 
     // TrustManager that accepts all certificates (needed for the HPC server's
-    // self-signed / untrusted certificate at utopia.hpc4ai.unito.it)
+    // internal certificate at utopia.hpc4ai.unito.it).
+    // Temporary workaround for lab testing only; not suitable for production use.
     private val trustAllManager = object : X509TrustManager {
         override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
         override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {}

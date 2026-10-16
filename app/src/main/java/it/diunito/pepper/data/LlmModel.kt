@@ -9,7 +9,7 @@ enum class LlmModel(
     val iconResDark: Int
 ) {
     GPT_OSS(
-        displayName = "ChatGPT",
+        displayName = "GPT-OSS",
         modelId = "SLURM.utopia/gpt-oss:120b",
         iconResLight = R.drawable.ic_chatgpt_black,
         iconResDark = R.drawable.ic_chatgpt_white
